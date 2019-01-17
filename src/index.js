@@ -1,12 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { Fragment } from "react";
+import ReactDOM from "react-dom";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import theme from "./theme";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const GlobalStyle = createGlobalStyle`
+${theme.global()}
+`;
+
+const getApp = () => (
+  <Fragment>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+    <GlobalStyle />
+  </Fragment>
+);
+
+ReactDOM.render(getApp(), document.getElementById("root"));
