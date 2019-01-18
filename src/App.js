@@ -65,90 +65,91 @@ const App = () => {
                   shareholders[currentInvestor].invested *
                   shareholders[currentInvestor].multiplier
               };
-              balance -= invested * multiplier;
+              console.log("suppost hawn...");
+              balance = balance - invested * multiplier;
             }
 
             balanceFromExit = balance;
             return balance;
           }, exitValue);
 
-        // setShareholders(shareholders);
+        setShareholders(shareholders);
         console.log("!!!!", balanceFromExit);
-        if (balanceFromExit === 0) {
-          setShareholders(shareholders);
-          return;
-        }
+        // if (balanceFromExit === 0) {
+        //   setShareholders(shareholders);
+        //   return;
+        // }
 
         console.log("!!!!", balanceFromExit);
         // Sharing the remaing balance between all shareholders
         // (assuming all share holders are participants without cap)
-        if (balanceFromExit) {
-          let investorsWhichExceedsCap = [];
-          /**
-           *  Checks for capped one first
-           */
-          Object.keys(shareholders).reduce((balance, currentInvestor) => {
-            const {
-              payout: { paricipation, liquidationPreference },
-              shares,
-              invested,
-              cap,
-              participating
-            } = shareholders[currentInvestor];
-            const doesExceedCap =
-              liquidationPreference + balance * (shares / 100) > invested * cap;
-            if (doesExceedCap) {
-              investorsWhichExceedsCap.push(currentInvestor);
-              shareholders[currentInvestor].payout = {
-                liquidationPreference,
-                paricipation: invested * cap,
-                isCapReached: true
-              };
-            }
-            if (!participating) {
-              return (balance = balance * (shares / 100));
-            }
-            return balance;
-          }, balanceFromExit);
+        // if (balanceFromExit) {
+        //   let investorsWhichExceedsCap = [];
+        //   /**
+        //    *  Checks for capped one first
+        //    */
+        //   Object.keys(shareholders).reduce((balance, currentInvestor) => {
+        //     const {
+        //       payout: { paricipation, liquidationPreference },
+        //       shares,
+        //       invested,
+        //       cap,
+        //       participating
+        //     } = shareholders[currentInvestor];
+        //     const doesExceedCap =
+        //       liquidationPreference + balance * (shares / 100) > invested * cap;
+        //     if (doesExceedCap) {
+        //       investorsWhichExceedsCap.push(currentInvestor);
+        //       shareholders[currentInvestor].payout = {
+        //         liquidationPreference,
+        //         paricipation: invested * cap,
+        //         isCapReached: true
+        //       };
+        //     }
+        //     if (!participating) {
+        //       return (balance = balance * (shares / 100));
+        //     }
+        //     return balance;
+        //   }, balanceFromExit);
 
-          /**
-           *  Uncapped, split the shares of the capped
-           *
-           */
-          Object.keys(shareholders).reduce((balance, currentInvestor) => {
-            const {
-              payout: { paricipation, liquidationPreference },
-              shares,
-              invested,
-              cap,
-              participating
-            } = shareholders[currentInvestor];
-            if (investorsWhichExceedsCap.includes(currentInvestor))
-              return balance;
-            // Check for any capped investors and change the shareholding
-            if (investorsWhichExceedsCap.length) {
-              investorsWhichExceedsCap.forEach(cappedInvestor => {
-                console.log("looping through capped investors");
-                shareholders[currentInvestor].shares +=
-                  shareholders[cappedInvestor].shares * (shares / 100);
-              });
-            }
-            console.log("hey there!!");
-            shareholders[currentInvestor].payout = {
-              liquidationPreference,
-              paricipation: participating ? balance * (shares / 100) : 0
-            };
-            if (!participating) {
-              balance = balance * (shares / 100);
-              balanceFromExit = balance;
-              setShareholders(shareholders);
-            }
-            return balance;
-          }, balanceFromExit);
-          //console.log("hey there", investorsWhichExceedsCap);
-          investorsWhichExceedsCap = [];
-          setShareholders(shareholders);
-        }
+        //   /**
+        //    *  Uncapped, split the shares of the capped
+        //    *
+        //    */
+        //   Object.keys(shareholders).reduce((balance, currentInvestor) => {
+        //     const {
+        //       payout: { paricipation, liquidationPreference },
+        //       shares,
+        //       invested,
+        //       cap,
+        //       participating
+        //     } = shareholders[currentInvestor];
+        //     if (investorsWhichExceedsCap.includes(currentInvestor))
+        //       return balance;
+        //     // Check for any capped investors and change the shareholding
+        //     if (investorsWhichExceedsCap.length) {
+        //       investorsWhichExceedsCap.forEach(cappedInvestor => {
+        //         console.log("looping through capped investors");
+        //         shareholders[currentInvestor].shares +=
+        //           shareholders[cappedInvestor].shares * (shares / 100);
+        //       });
+        //     }
+        //     console.log("hey there!!");
+        //     shareholders[currentInvestor].payout = {
+        //       liquidationPreference,
+        //       paricipation: participating ? balance * (shares / 100) : 0
+        //     };
+        //     if (!participating) {
+        //       balance = balance * (shares / 100);
+        //       balanceFromExit = balance;
+        //       setShareholders(shareholders);
+        //     }
+        //     return balance;
+        //   }, balanceFromExit);
+        //   //console.log("hey there", investorsWhichExceedsCap);
+        //   investorsWhichExceedsCap = [];
+        //   setShareholders(shareholders);
+        // }
       } else {
         setShareholders(cloneDeep(defaultShareHoldersData));
       }
