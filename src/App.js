@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { Col, Row, Container } from "styled-bootstrap-grid";
-import { ShareHolder, SmallText, ResetData } from "./style";
+import { ShareHolder, SmallText, ResetData, Input } from "./style";
 import { cloneDeep } from "lodash";
 import { toShortNumber } from "./utils";
+import NumericInput from "react-numeric-input";
 
 const investorsCommonVariables = {
   cap: 2,
@@ -43,14 +44,15 @@ const defaultShareHolders = {
 
 const App = () => {
   const [exitValue, setExitValue] = useState("");
-  const [investorCap, setInvestorCap] = useState(2);
+  const [toggle, setToggle] = useState(false);
   const [shareholders, setShareholders] = useState(
     cloneDeep(defaultShareHolders)
   );
   //console.log("..... the default ", defaultShareHolders);
   useEffect(
     () => {
-      if (exitValue) {
+      console.log("testing!!!");
+      if (exitValue != "aaaaa") {
         console.log("xi zobb", exitValue);
         let balanceFromExit;
 
@@ -144,7 +146,8 @@ const App = () => {
               payout: { paricipation, liquidationPreference },
               shares,
               invested,
-              cap
+              cap,
+              participating
             } = shareholders[currentInvestor];
             // Check for any capped investors and change the shareholding
             if (investorsWhichExceedsCap.length) {
@@ -155,10 +158,12 @@ const App = () => {
               });
             }
             console.log("hey there!!");
-            shareholders[currentInvestor].payout = {
-              liquidationPreference,
-              paricipation: balance * (shares / 100)
-            };
+            if (participating) {
+              shareholders[currentInvestor].payout = {
+                liquidationPreference,
+                paricipation: balance * (shares / 100)
+              };
+            }
             return balance;
           }, balanceFromExit);
           //console.log("hey there", investorsWhichExceedsCap);
@@ -169,7 +174,7 @@ const App = () => {
         setShareholders(cloneDeep(defaultShareHolders));
       }
     },
-    [exitValue]
+    [exitValue, toggle]
   );
 
   return (
@@ -207,10 +212,12 @@ const App = () => {
                 {!isFounders && (
                   <div>
                     Cap:
-                    <input
+                    <Input
+                      type="number"
                       onChange={e => {
                         shareholders[key].cap = e.target.value;
                         setShareholders(shareholders);
+                        setToggle(!toggle);
                       }}
                       value={cap}
                     />
@@ -219,10 +226,12 @@ const App = () => {
                 {!isFounders && (
                   <div>
                     multiplier:
-                    <input
+                    <Input
+                      type="number"
                       onChange={e => {
                         shareholders[key].multiplier = e.target.value;
                         setShareholders(shareholders);
+                        setToggle(!toggle);
                       }}
                       value={multiplier}
                     />
@@ -236,6 +245,7 @@ const App = () => {
                       onChange={e => {
                         shareholders[key].participating = true;
                         setShareholders(shareholders);
+                        setToggle(!toggle);
                       }}
                       name={`participating-${key}`}
                       checked={participating}
@@ -246,6 +256,7 @@ const App = () => {
                       onChange={e => {
                         shareholders[key].participating = false;
                         setShareholders(shareholders);
+                        setToggle(!toggle);
                       }}
                       name={`participating-${key}`}
                       checked={!participating}
@@ -258,8 +269,11 @@ const App = () => {
           })}
         </Col>
         <Col md={3}>
-          <input
+          <Input
+            isWide
             value={exitValue}
+            step={1000000}
+            type="number"
             onChange={e => setExitValue(e.target.value)}
             placeholder="Exit value"
           />
@@ -275,6 +289,10 @@ const App = () => {
       </Row>
     </Container>
   );
+};
+
+const myFormat = num => {
+  return `$ ${num}`;
 };
 
 export default App;
