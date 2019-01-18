@@ -12,7 +12,7 @@ import { cloneDeep } from "lodash";
 import {
   toShortNumber,
   getShareholdersDefaultData,
-  removeSharesFromCapTable
+  calculateSharesinPercentage
 } from "./utils";
 import Tile from "./components/Tile";
 import uuid from "uuid";
@@ -111,10 +111,10 @@ const App = () => {
               investorsWhichExceedsCap.push(currentInvestor);
               shareholders[currentInvestor].payout = {
                 liquidationPreference,
-                paricipation: invested * cap,
+                paricipation: invested * (cap - 1),
                 isCapReached: true
               };
-              removeSharesFromCapTable(shareholders, key);
+              calculateSharesinPercentage(shareholders);
             }
             if (!participating) {
               return (balance = balance * (sharesInPercentage / 100));

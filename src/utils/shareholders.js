@@ -40,8 +40,7 @@ const sharesHoldersData = {
   }
 };
 
-export const removeSharesFromCapTable = (shareHolders, key) => {
-  shareHolders[key].shares = 0;
+export const updateSharesFromCapTable = (shareHolders, key) => {
   return calculateSharesinPercentage(shareHolders);
 };
 

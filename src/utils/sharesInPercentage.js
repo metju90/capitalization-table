@@ -10,11 +10,16 @@ export default shareholders => {
   let totalShares = 0;
   return Object.keys(shareholders)
     .map(key => {
+      // omit capped investors
+      if (shareholders[key].isCapReached) return shareholders[key];
       totalShares += shareholders[key].shares;
       return shareholders[key];
     })
     .map(s => {
-      s.sharesInPercentage = 100 * (s.shares / totalShares).toFixed(4);
+      s.sharesInPercentage =
+        Math.round(((100 * s.shares) / totalShares).toFixed(2) * 100) / 100;
+
+      console.log("wtf??? ", s.sharesInPercentage);
       return s;
     });
 };

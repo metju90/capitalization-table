@@ -63,7 +63,7 @@ const Tile = ({
             <span>Cap:</span>
             <UserInteractionWrapper>
               <RemoveButton
-                isDisabled={cap < 1}
+                isDisabled={cap < 2}
                 onClick={() => {
                   shareholders[currentStakeholder].cap = cap - 1;
                   setShareholders(shareholders);
