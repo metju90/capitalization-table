@@ -1,3 +1,8 @@
+## Features
+
+- Seniority Structure: Standard. The latest Serie has precedent over others.
+- Limited but dynamic settings. Capping, multiplying and participating.
+
 ## Approach to build the app.
 
 I am a fond of cool features and nice code. But my main objective is to get this challenging task to work properly. Once I do that, I will refactor my code.

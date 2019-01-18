@@ -36,11 +36,9 @@ const Tile = ({
         <span>Shareholding:</span> <Data>{sharesInPercentage}%</Data>
       </Result>
 
-      {!isFounders && (
-        <Result>
-          <span>Investment:</span> <Data>{toShortNumber(invested)}</Data>
-        </Result>
-      )}
+      <Result>
+        <span>Investment:</span> <Data>{toShortNumber(invested)}</Data>
+      </Result>
       {!isFounders && (
         <Result>
           <span>Liquidation Preference:</span>
@@ -56,9 +54,8 @@ const Tile = ({
           <SmallText>{isCapReached && `(Capped)`}</SmallText>
         </Data>
       </Result>
-      <hr />
-      <VariablesWrapper>
-        {!isFounders && (
+      {!isFounders && (
+        <VariablesWrapper>
           <Variable>
             <span>Cap:</span>
             <UserInteractionWrapper>
@@ -84,8 +81,6 @@ const Tile = ({
               </AddButton>
             </UserInteractionWrapper>
           </Variable>
-        )}
-        {!isFounders && (
           <Variable>
             <span>multiplier:</span>
             <UserInteractionWrapper>
@@ -111,8 +106,6 @@ const Tile = ({
               </AddButton>
             </UserInteractionWrapper>
           </Variable>
-        )}
-        {!isFounders && (
           <Variable>
             <span>participating:</span>
             <div>
@@ -140,8 +133,8 @@ const Tile = ({
               <label>No</label>
             </div>
           </Variable>
-        )}
-      </VariablesWrapper>
+        </VariablesWrapper>
+      )}
     </ShareHolder>
   );
 };

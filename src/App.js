@@ -41,16 +41,20 @@ const App = () => {
         console.log("xi zobb", exitValue);
         let balanceFromExit;
 
-        // Giving the venture investor their inital investment
+        // Giving the venture investor the preference
         Object.keys(shareholders)
           .reverse() // To start from the latest Series
           .reduce((balance, currentInvestor) => {
-            if (currentInvestor === "founders") return balance;
             const {
               invested,
               multiplier,
               payout: { paricipation }
             } = shareholders[currentInvestor];
+
+            if (currentInvestor === "founders") {
+              shareholders[currentInvestor].payout.paricipation = 0;
+              return balance;
+            }
 
             if (balance === 0) {
               shareholders[currentInvestor].payout = {
@@ -88,6 +92,11 @@ const App = () => {
         //   return;
         // }
 
+        // ugly hack
+        if (!balanceFromExit) {
+          // console.log(shareholders, shareholders.founders);
+          shareholders[0].payout.paricipation = 0;
+        }
         console.log("!!!!", balanceFromExit);
         // Sharing the remaing balance between all shareholders
         // (assuming all share holders are participants without cap)
@@ -107,6 +116,7 @@ const App = () => {
             const doesExceedCap =
               liquidationPreference + balance * (sharesInPercentage / 100) >
               invested * cap;
+
             if (doesExceedCap) {
               investorsWhichExceedsCap.push(currentInvestor);
               shareholders[currentInvestor].payout = {
@@ -116,6 +126,7 @@ const App = () => {
               };
               calculateSharesinPercentage(shareholders);
             }
+
             if (!participating) {
               return (balance = balance * (sharesInPercentage / 100));
             }
@@ -145,15 +156,21 @@ const App = () => {
                   (sharesInPercentage / 100);
               });
             }
-            console.log("hey there!!");
+            console.log(
+              currentInvestor,
+              shareholders[currentInvestor].sharesInPercentage
+            );
             shareholders[currentInvestor].payout = {
               liquidationPreference,
               paricipation: participating
-                ? balance * (sharesInPercentage / 100)
+                ? balance *
+                  (shareholders[currentInvestor].sharesInPercentage / 100)
                 : 0
             };
             if (!participating) {
-              balance = balance * (sharesInPercentage / 100);
+              balance =
+                balance *
+                (shareholders[currentInvestor].sharesInPercentage / 100);
               balanceFromExit = balance;
               setShareholders(shareholders);
             }

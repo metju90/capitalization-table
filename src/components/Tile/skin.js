@@ -53,19 +53,20 @@ export const Variable = styled.div`
 export const Result = styled.div`
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  align-items: flex-end;
+  padding-top: 15px;
+  &:last-of-type {
+    margin-bottom: 20px;
+  }
 `;
 
 export const Data = styled.strong`
-  margin: 0 0 5px 15px;
   color: ${({ color, theme }) => theme.colorSet[color]};
-  &:last-of-type {
-    margin-bottom: 15px;
-  }
 `;
 
 export const Title = styled.h2`
   text-align: center;
-  margin: 0 0 15px;
 `;
 
 export const UserInputNumber = styled.span`
