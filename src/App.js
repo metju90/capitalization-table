@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { Col, Row, Container } from "styled-bootstrap-grid";
-import { Investor, SmallText } from "./style";
+import { ShareHolder, SmallText, ResetData } from "./style";
+import { cloneDeep } from "lodash";
+import { toShortNumber } from "./utils";
 
 const investorsCommonVariables = {
   cap: 2,
   multiplier: 1,
   participating: true,
   payout: {
-    liquidationPreference: null,
-    paricipation: null
+    liquidationPreference: 0,
+    paricipation: 0
   }
 };
 
@@ -22,93 +24,149 @@ const defaultShareHolders = {
   serie_a: {
     title: "Serie A",
     shares: 6.67,
-    invested: 0.9,
+    invested: 900000,
     ...investorsCommonVariables
   },
   serie_b: {
     title: "Serie B",
     shares: 10,
-    invested: 2.1,
+    invested: 2100000,
     ...investorsCommonVariables
   },
   serie_c: {
     title: "Serie C",
     shares: 50,
-    invested: 15,
+    invested: 15000000,
     ...investorsCommonVariables
   }
 };
 
-const roundTwoDec = num => Math.round(num * 100) / 100;
-
 const App = () => {
   const [exitValue, setExitValue] = useState("");
-  const [shareholders, setShareholders] = useState(defaultShareHolders);
+  const [investorCap, setInvestorCap] = useState(2);
+  const [shareholders, setShareholders] = useState(
+    cloneDeep(defaultShareHolders)
+  );
+  //console.log("..... the default ", defaultShareHolders);
   useEffect(
     () => {
       if (exitValue) {
+        console.log("xi zobb", exitValue);
         let balanceFromExit;
 
         // Giving the venture investor their inital investment
         Object.keys(shareholders)
           .reverse() // To start from the latest Series
-          .reduce((balance, key) => {
-            if (key === "founders") return balance;
-            // console.log("money left...", key, balance);
-            balance = balance - shareholders[key].invested;
-            // shareholders[key].payout =
-            //   exitValue * (shareholders[key].shares / 100);
-            // const
-            shareholders[key].payout = {
-              liquidationPreference:
-                shareholders[key].invested * shareholders[key].multiplier
-            };
+          .reduce((balance, currentInvestor) => {
+            // if (currentInvestor === "founders") return balance;
+            const {
+              invested,
+              multiplier,
+              payout: { paricipation }
+            } = shareholders[currentInvestor];
+
+            if (balance === 0) {
+              shareholders[currentInvestor].payout = {
+                liquidationPreference: 0,
+                paricipation
+              };
+            }
+            // if there is less balance than investment
+            // console.log(
+            //   "balance is less!!",
+            //   currentInvestor,
+            //   balance <= invested * multiplier,
+            //   exitValue
+            // );
+            if (balance <= invested * multiplier) {
+              shareholders[currentInvestor].payout = {
+                paricipation,
+                liquidationPreference: balance
+              };
+              balance = 0;
+            }
+            if (balance > invested * multiplier) {
+              shareholders[currentInvestor].payout = {
+                paricipation,
+                liquidationPreference:
+                  shareholders[currentInvestor].invested *
+                  shareholders[currentInvestor].multiplier
+              };
+              balance = balance - invested * multiplier;
+            }
+
             balanceFromExit = balance;
             return balance;
           }, exitValue);
-        console.log(
-          ">>>>>>  balance left after investors take init invest",
-          balanceFromExit
-        );
+        // setShareholders(shareholders);
+        console.log("!!!!", balanceFromExit);
+        if (balanceFromExit === 0) {
+          setShareholders(shareholders);
+          return;
+        }
+
+        console.log("!!!!", balanceFromExit);
         // Sharing the remaing balance between all shareholders
         // (assuming all share holders are participants without cap)
         if (balanceFromExit) {
-          const investorsWithExceededCap = [];
-          Object.keys(shareholders).reduce((balance, key) => {
+          let investorsWhichExceedsCap = [];
+          /**
+           *  Checks for capped one first
+           */
+          Object.keys(shareholders).reduce((balance, currentInvestor) => {
             const {
               payout: { paricipation, liquidationPreference },
               shares,
               invested,
               cap
-            } = shareholders[key];
-
+            } = shareholders[currentInvestor];
             const doesExceedCap =
               liquidationPreference + balance * (shares / 100) > invested * cap;
             if (doesExceedCap) {
-              investorsWithExceededCap.push(shareholders[key]);
-              console.log("!!!doesExceedCap ", key, doesExceedCap);
-              console.log(
-                "the difference is... ",
-                liquidationPreference +
-                  balance * (shares / 100) -
-                  invested * cap
-              );
-              balance +=
-                liquidationPreference +
-                balance * (shares / 100) -
-                invested * cap;
+              investorsWhichExceedsCap.push(currentInvestor);
+              shareholders[currentInvestor].payout = {
+                liquidationPreference,
+                paricipation: invested * cap,
+                isCapReached: true
+              };
             }
-            shareholders[key].payout = {
+            return balance;
+          }, balanceFromExit);
+
+          /**
+           *  Uncapped, split the shares of the capped
+           *
+           */
+          Object.keys(shareholders).reduce((balance, currentInvestor) => {
+            if (investorsWhichExceedsCap.includes(currentInvestor))
+              return balance;
+            const {
+              payout: { paricipation, liquidationPreference },
+              shares,
+              invested,
+              cap
+            } = shareholders[currentInvestor];
+            // Check for any capped investors and change the shareholding
+            if (investorsWhichExceedsCap.length) {
+              investorsWhichExceedsCap.forEach(cappedInvestor => {
+                console.log("looping through capped investors");
+                shareholders[currentInvestor].shares +=
+                  shareholders[cappedInvestor].shares * (shares / 100);
+              });
+            }
+            console.log("hey there!!");
+            shareholders[currentInvestor].payout = {
               liquidationPreference,
-              paricipation: doesExceedCap
-                ? invested * cap
-                : balance * (shares / 100),
-              isCapReached: doesExceedCap
+              paricipation: balance * (shares / 100)
             };
             return balance;
           }, balanceFromExit);
+          //console.log("hey there", investorsWhichExceedsCap);
+          investorsWhichExceedsCap = [];
+          setShareholders(shareholders);
         }
-        setShareholders(shareholders);
+      } else {
+        setShareholders(cloneDeep(defaultShareHolders));
       }
     },
     [exitValue]
@@ -123,31 +181,96 @@ const App = () => {
             const {
               title,
               shares,
-              payout: { liquidationPreference, paricipation, isCapReached }
+              payout: { liquidationPreference, paricipation, isCapReached },
+              invested,
+              cap,
+              multiplier,
+              participating
             } = shareholders[key];
+            const isFounders = title === "Founders";
             return (
-              <Investor>
+              <ShareHolder>
                 {`${title}: ${shares}%`}
-                {liquidationPreference && (
-                  <div>Payout LP: {liquidationPreference} </div>
+                {!isFounders && (
+                  <div>Investment: {toShortNumber(invested)} </div>
                 )}
-                {paricipation && (
+                {!isFounders && (
                   <div>
-                    Payout Par: {paricipation}{" "}
-                    {isCapReached && <SmallText>(Capped)</SmallText>}{" "}
+                    Liquidation Preference:{" "}
+                    {toShortNumber(liquidationPreference)}{" "}
                   </div>
                 )}
-              </Investor>
+                <div>
+                  Paricipation: {toShortNumber(paricipation)}
+                  {isCapReached && <SmallText>(Capped)</SmallText>}
+                </div>
+                {!isFounders && (
+                  <div>
+                    Cap:
+                    <input
+                      onChange={e => {
+                        shareholders[key].cap = e.target.value;
+                        setShareholders(shareholders);
+                      }}
+                      value={cap}
+                    />
+                  </div>
+                )}
+                {!isFounders && (
+                  <div>
+                    multiplier:
+                    <input
+                      onChange={e => {
+                        shareholders[key].multiplier = e.target.value;
+                        setShareholders(shareholders);
+                      }}
+                      value={multiplier}
+                    />
+                  </div>
+                )}
+                {!isFounders && (
+                  <div>
+                    participating:
+                    <input
+                      type="radio"
+                      onChange={e => {
+                        shareholders[key].participating = true;
+                        setShareholders(shareholders);
+                      }}
+                      name={`participating-${key}`}
+                      checked={participating}
+                    />
+                    <label>Yes</label>
+                    <input
+                      type="radio"
+                      onChange={e => {
+                        shareholders[key].participating = false;
+                        setShareholders(shareholders);
+                      }}
+                      name={`participating-${key}`}
+                      checked={!participating}
+                    />
+                    <label>No</label>
+                  </div>
+                )}
+              </ShareHolder>
             );
           })}
         </Col>
         <Col md={3}>
           <input
             value={exitValue}
-            type="number"
             onChange={e => setExitValue(e.target.value)}
             placeholder="Exit value"
           />
+          <ResetData
+            onClick={() => {
+              setShareholders(cloneDeep(defaultShareHolders));
+              setExitValue("");
+            }}
+          >
+            Reset
+          </ResetData>
         </Col>
       </Row>
     </Container>
