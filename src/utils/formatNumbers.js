@@ -5,7 +5,7 @@
  *
  * @param {number} number - a number
  *
- * @returns a String
+ * @returns {String}
  */
 const toShortNumber = number => {
   number = parseFloat(Number(number)).toFixed(2);

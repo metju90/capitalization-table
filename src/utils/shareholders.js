@@ -1,4 +1,4 @@
-import { calculateSharesinPercentage } from "./utils";
+import { calculateSharesinPercentage } from "./index";
 
 const investorsCommonVariables = {
   cap: 2,
@@ -40,6 +40,11 @@ const sharesHoldersData = {
   }
 };
 
-export default () => {
+export const removeSharesFromCapTable = (shareHolders, key) => {
+  shareHolders[key].shares = 0;
+  return calculateSharesinPercentage(shareHolders);
+};
+
+export const getShareholdersDefaultData = () => {
   return calculateSharesinPercentage(sharesHoldersData);
 };
