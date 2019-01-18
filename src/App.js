@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
-import { Col, Row, Container } from "styled-bootstrap-grid";
+import React, { useState, useEffect, Fragment } from "react";
+import { Col, Row } from "styled-bootstrap-grid";
 import {
   ResetData,
   Input,
   ExitValueTitle,
   ContentCenter,
-  SmallText
-} from "./style";
+  SmallText,
+  Container
+} from "./skin";
 import { cloneDeep } from "lodash";
 import { toShortNumber } from "./utils";
 import Tile from "./components/Tile";
 import uuid from "uuid";
+import Footer from "./components/Footer";
 
 const investorsCommonVariables = {
   cap: 2,
@@ -185,47 +186,50 @@ const App = () => {
   );
 
   return (
-    <Container>
-      <SmallText>Seniority Structure: Standard</SmallText>
-      <ContentCenter alignItem="center">
-        <Input
-          isExitInput
-          value={exitValue}
-          step={1000000}
-          type="number"
-          onChange={e => setExitValue(e.target.value)}
-          placeholder="Exit value"
-        />
-        <ResetData
-          onClick={() => {
-            setShareholders(cloneDeep(defaultShareHolders));
-            setExitValue(25000000);
-          }}
-        >
-          Reset
-        </ResetData>
-      </ContentCenter>
-      <ContentCenter>
-        <ExitValueTitle>
-          Exit value <big>{toShortNumber(exitValue)}</big>
-        </ExitValueTitle>
-      </ContentCenter>
-      <Row>
-        <ContentCenter>
-          {Object.keys(shareholders).map(key => (
-            <Tile
-              key={uuid()}
-              toggle={toggle}
-              setToggle={setToggle}
-              currentStakeholder={key}
-              {...shareholders[key]}
-              shareholders={shareholders}
-              setShareholders={setShareholders}
-            />
-          ))}
+    <Fragment>
+      <Container>
+        <SmallText>Seniority Structure: Standard</SmallText>
+        <ContentCenter alignItem="center">
+          <Input
+            isExitInput
+            value={exitValue}
+            step={1000000}
+            type="number"
+            onChange={e => setExitValue(e.target.value)}
+            placeholder="Exit value"
+          />
+          <ResetData
+            onClick={() => {
+              setShareholders(cloneDeep(defaultShareHolders));
+              setExitValue(25000000);
+            }}
+          >
+            Reset
+          </ResetData>
         </ContentCenter>
-      </Row>
-    </Container>
+        <ContentCenter>
+          <ExitValueTitle>
+            Exit value <big>{toShortNumber(exitValue)}</big>
+          </ExitValueTitle>
+        </ContentCenter>
+        <Row>
+          <ContentCenter>
+            {Object.keys(shareholders).map(key => (
+              <Tile
+                key={uuid()}
+                toggle={toggle}
+                setToggle={setToggle}
+                currentStakeholder={key}
+                {...shareholders[key]}
+                shareholders={shareholders}
+                setShareholders={setShareholders}
+              />
+            ))}
+          </ContentCenter>
+        </Row>
+      </Container>
+      <Footer />
+    </Fragment>
   );
 };
 
