@@ -13,50 +13,18 @@ import { toShortNumber } from "./utils";
 import Tile from "./components/Tile";
 import uuid from "uuid";
 import Footer from "./components/Footer";
+import defaultShareHoldersData from "./shareholders";
 
-const investorsCommonVariables = {
-  cap: 2,
-  multiplier: 1,
-  participating: true,
-  payout: {
-    liquidationPreference: 0,
-    paricipation: 0
-  }
-};
-
-const defaultShareHolders = {
-  founders: {
-    title: "Founders",
-    shares: 33.33,
-    ...investorsCommonVariables // temporary
-  },
-  serie_a: {
-    title: "Serie A",
-    shares: 6.67,
-    invested: 900000,
-    ...investorsCommonVariables
-  },
-  serie_b: {
-    title: "Serie B",
-    shares: 10,
-    invested: 2100000,
-    ...investorsCommonVariables
-  },
-  serie_c: {
-    title: "Serie C",
-    shares: 50,
-    invested: 15000000,
-    ...investorsCommonVariables
-  }
-};
+const oneMillion = 1000000;
+const twentyFiveMillion = 25000000;
 
 const App = () => {
-  const [exitValue, setExitValue] = useState(25000000);
+  const [exitValue, setExitValue] = useState(twentyFiveMillion);
   const [toggle, setToggle] = useState(false);
   const [shareholders, setShareholders] = useState(
-    cloneDeep(defaultShareHolders)
+    cloneDeep(defaultShareHoldersData)
   );
-  //console.log("..... the default ", defaultShareHolders);
+  //console.log("..... the default ", defaultShareHoldersData);
   useEffect(
     () => {
       console.log("testing!!!");
@@ -179,7 +147,7 @@ const App = () => {
           setShareholders(shareholders);
         }
       } else {
-        setShareholders(cloneDeep(defaultShareHolders));
+        setShareholders(cloneDeep(defaultShareHoldersData));
       }
     },
     [exitValue, toggle]
@@ -200,8 +168,8 @@ const App = () => {
           />
           <ResetData
             onClick={() => {
-              setShareholders(cloneDeep(defaultShareHolders));
-              setExitValue(25000000);
+              setShareholders(cloneDeep(defaultShareHoldersData));
+              setExitValue(twentyFiveMillion);
             }}
           >
             Reset
@@ -231,10 +199,6 @@ const App = () => {
       <Footer />
     </Fragment>
   );
-};
-
-const myFormat = num => {
-  return `$ ${num}`;
 };
 
 export default App;
