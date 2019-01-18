@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { Col, Row, Container } from "styled-bootstrap-grid";
-import { ShareHolder, SmallText, ResetData, Input } from "./style";
+import {
+  ResetData,
+  Input,
+  ExitValueTitle,
+  ContentCenter,
+  SmallText
+} from "./style";
 import { cloneDeep } from "lodash";
 import { toShortNumber } from "./utils";
-import NumericInput from "react-numeric-input";
+import Tile from "./components/Tile";
+import uuid from "uuid";
 
 const investorsCommonVariables = {
   cap: 2,
@@ -43,7 +50,7 @@ const defaultShareHolders = {
 };
 
 const App = () => {
-  const [exitValue, setExitValue] = useState("");
+  const [exitValue, setExitValue] = useState(25000000);
   const [toggle, setToggle] = useState(false);
   const [shareholders, setShareholders] = useState(
     cloneDeep(defaultShareHolders)
@@ -179,113 +186,44 @@ const App = () => {
 
   return (
     <Container>
-      <h2>Seniority Structure: Standard</h2>
+      <SmallText>Seniority Structure: Standard</SmallText>
+      <ContentCenter alignItem="center">
+        <Input
+          isExitInput
+          value={exitValue}
+          step={1000000}
+          type="number"
+          onChange={e => setExitValue(e.target.value)}
+          placeholder="Exit value"
+        />
+        <ResetData
+          onClick={() => {
+            setShareholders(cloneDeep(defaultShareHolders));
+            setExitValue(25000000);
+          }}
+        >
+          Reset
+        </ResetData>
+      </ContentCenter>
+      <ContentCenter>
+        <ExitValueTitle>
+          Exit value <big>{toShortNumber(exitValue)}</big>
+        </ExitValueTitle>
+      </ContentCenter>
       <Row>
-        <Col md={5}>
-          {Object.keys(shareholders).map(key => {
-            const {
-              title,
-              shares,
-              payout: { liquidationPreference, paricipation, isCapReached },
-              invested,
-              cap,
-              multiplier,
-              participating
-            } = shareholders[key];
-            const isFounders = title === "Founders";
-            return (
-              <ShareHolder>
-                {`${title}: ${shares}%`}
-                {!isFounders && (
-                  <div>Investment: {toShortNumber(invested)} </div>
-                )}
-                {!isFounders && (
-                  <div>
-                    Liquidation Preference:{" "}
-                    {toShortNumber(liquidationPreference)}{" "}
-                  </div>
-                )}
-                <div>
-                  Paricipation: {toShortNumber(paricipation)}
-                  {isCapReached && <SmallText>(Capped)</SmallText>}
-                </div>
-                {!isFounders && (
-                  <div>
-                    Cap:
-                    <Input
-                      type="number"
-                      onChange={e => {
-                        shareholders[key].cap = e.target.value;
-                        setShareholders(shareholders);
-                        setToggle(!toggle);
-                      }}
-                      value={cap}
-                    />
-                  </div>
-                )}
-                {!isFounders && (
-                  <div>
-                    multiplier:
-                    <Input
-                      type="number"
-                      onChange={e => {
-                        shareholders[key].multiplier = e.target.value;
-                        setShareholders(shareholders);
-                        setToggle(!toggle);
-                      }}
-                      value={multiplier}
-                    />
-                  </div>
-                )}
-                {!isFounders && (
-                  <div>
-                    participating:
-                    <input
-                      type="radio"
-                      onChange={e => {
-                        shareholders[key].participating = true;
-                        setShareholders(shareholders);
-                        setToggle(!toggle);
-                      }}
-                      name={`participating-${key}`}
-                      checked={participating}
-                    />
-                    <label>Yes</label>
-                    <input
-                      type="radio"
-                      onChange={e => {
-                        shareholders[key].participating = false;
-                        setShareholders(shareholders);
-                        setToggle(!toggle);
-                      }}
-                      name={`participating-${key}`}
-                      checked={!participating}
-                    />
-                    <label>No</label>
-                  </div>
-                )}
-              </ShareHolder>
-            );
-          })}
-        </Col>
-        <Col md={3}>
-          <Input
-            isWide
-            value={exitValue}
-            step={1000000}
-            type="number"
-            onChange={e => setExitValue(e.target.value)}
-            placeholder="Exit value"
-          />
-          <ResetData
-            onClick={() => {
-              setShareholders(cloneDeep(defaultShareHolders));
-              setExitValue("");
-            }}
-          >
-            Reset
-          </ResetData>
-        </Col>
+        <ContentCenter>
+          {Object.keys(shareholders).map(key => (
+            <Tile
+              key={uuid()}
+              toggle={toggle}
+              setToggle={setToggle}
+              currentStakeholder={key}
+              {...shareholders[key]}
+              shareholders={shareholders}
+              setShareholders={setShareholders}
+            />
+          ))}
+        </ContentCenter>
       </Row>
     </Container>
   );
