@@ -13,10 +13,11 @@ import { toShortNumber } from "./utils";
 import Tile from "./components/Tile";
 import uuid from "uuid";
 import Footer from "./components/Footer";
-import defaultShareHoldersData from "./shareholders";
+import getShareHoldersDefaultData from "./shareholders";
 
 const oneMillion = 1000000;
 const twentyFiveMillion = 25000000;
+const defaultShareHoldersData = getShareHoldersDefaultData();
 
 const App = () => {
   const [exitValue, setExitValue] = useState(twentyFiveMillion);
@@ -36,7 +37,7 @@ const App = () => {
         Object.keys(shareholders)
           .reverse() // To start from the latest Series
           .reduce((balance, currentInvestor) => {
-            // if (currentInvestor === "founders") return balance;
+            if (currentInvestor === "founders") return balance;
             const {
               invested,
               multiplier,
@@ -50,15 +51,9 @@ const App = () => {
               };
             }
             // if there is less balance than investment
-            // console.log(
-            //   "balance is less!!",
-            //   currentInvestor,
-            //   balance <= invested * multiplier,
-            //   exitValue
-            // );
             if (balance <= invested * multiplier) {
               shareholders[currentInvestor].payout = {
-                paricipation,
+                paricipation: 0,
                 liquidationPreference: balance
               };
               balance = 0;
@@ -70,12 +65,13 @@ const App = () => {
                   shareholders[currentInvestor].invested *
                   shareholders[currentInvestor].multiplier
               };
-              balance = balance - invested * multiplier;
+              balance -= invested * multiplier;
             }
 
             balanceFromExit = balance;
             return balance;
           }, exitValue);
+
         // setShareholders(shareholders);
         console.log("!!!!", balanceFromExit);
         if (balanceFromExit === 0) {
@@ -96,7 +92,8 @@ const App = () => {
               payout: { paricipation, liquidationPreference },
               shares,
               invested,
-              cap
+              cap,
+              participating
             } = shareholders[currentInvestor];
             const doesExceedCap =
               liquidationPreference + balance * (shares / 100) > invested * cap;
@@ -108,6 +105,9 @@ const App = () => {
                 isCapReached: true
               };
             }
+            if (!participating) {
+              return (balance = balance * (shares / 100));
+            }
             return balance;
           }, balanceFromExit);
 
@@ -116,8 +116,6 @@ const App = () => {
            *
            */
           Object.keys(shareholders).reduce((balance, currentInvestor) => {
-            if (investorsWhichExceedsCap.includes(currentInvestor))
-              return balance;
             const {
               payout: { paricipation, liquidationPreference },
               shares,
@@ -125,6 +123,8 @@ const App = () => {
               cap,
               participating
             } = shareholders[currentInvestor];
+            if (investorsWhichExceedsCap.includes(currentInvestor))
+              return balance;
             // Check for any capped investors and change the shareholding
             if (investorsWhichExceedsCap.length) {
               investorsWhichExceedsCap.forEach(cappedInvestor => {
@@ -134,11 +134,14 @@ const App = () => {
               });
             }
             console.log("hey there!!");
-            if (participating) {
-              shareholders[currentInvestor].payout = {
-                liquidationPreference,
-                paricipation: balance * (shares / 100)
-              };
+            shareholders[currentInvestor].payout = {
+              liquidationPreference,
+              paricipation: participating ? balance * (shares / 100) : 0
+            };
+            if (!participating) {
+              balance = balance * (shares / 100);
+              balanceFromExit = balance;
+              setShareholders(shareholders);
             }
             return balance;
           }, balanceFromExit);

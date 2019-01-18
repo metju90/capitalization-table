@@ -16,7 +16,7 @@ import { SmallText, Input } from "../../skin";
 
 const Tile = ({
   title,
-  shares,
+  sharesInPercentage,
   payout: { liquidationPreference, paricipation, isCapReached },
   invested,
   cap,
@@ -33,7 +33,7 @@ const Tile = ({
     <ShareHolder>
       <Title>{title}</Title>
       <Result>
-        <span>Shareholding:</span> <Data>{shares.toFixed(2)}%</Data>
+        <span>Shareholding:</span> <Data>{sharesInPercentage}%</Data>
       </Result>
 
       {!isFounders && (
@@ -53,7 +53,7 @@ const Tile = ({
         <span>Paricipation:</span>
         <Data>
           {toShortNumber(paricipation)}
-          {isCapReached && <SmallText>(Capped) </SmallText>}
+          <SmallText>{isCapReached && `(Capped)`}</SmallText>
         </Data>
       </Result>
       <hr />

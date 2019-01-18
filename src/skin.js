@@ -8,7 +8,8 @@ export const Container = styled(BsContainer)`
 export const SmallText = styled.div`
   color: ${({ theme }) => theme.colorSet.secondary};
   font-size: 11px;
-  font-weight: 200px;
+  font-weight: 200;
+  height: 5px;
 `;
 
 export const ResetData = styled.a`

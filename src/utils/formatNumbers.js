@@ -1,3 +1,12 @@
+/**
+ *
+ * Function which takes a any number. Depending how long is the given
+ * number, different process is applied
+ *
+ * @param {number} number - a number
+ *
+ * @returns a String
+ */
 const toShortNumber = number => {
   number = parseFloat(Number(number)).toFixed(2);
   // Nine Zeroes for Billions
@@ -12,10 +21,8 @@ const toShortNumber = number => {
       ? Number(Math.abs(Number(number)) / 1.0e3).toFixed(2) + "K"
       : Math.abs(Number(number));
 
-  const lastChar = number.toString().charAt(number.length - 1);
-  //   number = Number(number)
-  //     .toFixed(2)
-  //     .concat(lastChar);
+  //   const lastChar = number.toString().charAt(number.length - 1);
+
   return number;
 };
 
