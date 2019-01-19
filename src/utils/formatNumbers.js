@@ -5,9 +5,9 @@
  *
  * @param {number} number - a number
  *
- * @returns {String}
+ * @returns {String} Short number with dollar sign
  */
-const toShortNumber = number => {
+const toShortDollar = number => {
   number = parseFloat(Number(number)).toFixed(2);
   // Nine Zeroes for Billions
   number =
@@ -23,7 +23,7 @@ const toShortNumber = number => {
 
   //   const lastChar = number.toString().charAt(number.length - 1);
 
-  return number;
+  return `$${number}`;
 };
 
-export { toShortNumber };
+export { toShortDollar };

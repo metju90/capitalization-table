@@ -5,11 +5,13 @@ export const Container = styled(BsContainer)`
   margin-bottom: 80px;
 `;
 
-export const SmallText = styled.div`
+export const SmallText = styled.span`
   color: ${({ theme }) => theme.colorSet.secondary};
   font-size: 11px;
   font-weight: 200;
-  margin-bottom: 5px;
+  display: block;
+  min-height: ${({ minHeight }) => (minHeight ? minHeight : "inherit")};
+  ${({ minHeight }) => minHeight && "margin: 15px 0"};
 `;
 
 export const ResetData = styled.a`
@@ -42,12 +44,28 @@ export const Input = styled.input`
   }
 `;
 
-export const ExitValueTitle = styled.h2`
+export const Summary = styled.div`
   font-weight: normal;
   font-size: normal;
   big {
     font-size: 20px;
     font-weight: 900;
+  }
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  span {
+    flex-basis: 100%;
+    display: flex;
   }
 `;
 
@@ -56,4 +74,5 @@ export const ContentCenter = styled.div`
   display: flex;
   justify-content: center;
   align-items: ${({ alignItem }) => (alignItem ? alignItem : "top")};
+  margin-top: 20px;
 `;

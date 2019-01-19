@@ -4,6 +4,7 @@ const investorsCommonVariables = {
   cap: 2,
   multiplier: 1,
   isParticipating: true,
+  hasConvertedToCommonShare: false,
   payout: {
     liquidationPreference: 0,
     participation: 0
@@ -38,10 +39,6 @@ const sharesHoldersData = {
     invested: 15000000,
     ...investorsCommonVariables
   }
-};
-
-export const updateSharesFromCapTable = (shareHolders, key) => {
-  return calculateSharesinPercentage(shareHolders);
 };
 
 export const getShareholdersDefaultData = () => {

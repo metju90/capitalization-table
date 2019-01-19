@@ -1,5 +1,5 @@
-import React from "react";
-import { toShortNumber } from "../../utils";
+import React, { Fragment } from "react";
+import { toShortDollar } from "../../utils";
 import {
   ShareHolder,
   AddButton,
@@ -10,7 +10,9 @@ import {
   Data,
   Title,
   UserInputNumber,
-  UserInteractionWrapper
+  UserInteractionWrapper,
+  ConvertButton,
+  GreyOverlay
 } from "./skin";
 import { SmallText, Input } from "../../skin";
 
@@ -26,7 +28,8 @@ const Tile = ({
   setShareholders,
   currentStakeholder,
   toggle,
-  setToggle
+  setToggle,
+  hasConvertedToCommonShare
 }) => {
   const isFounders = title === "Founders";
   return (
@@ -37,25 +40,29 @@ const Tile = ({
       </DataRow>
 
       <DataRow>
-        <span>Investment:</span> <Data>{toShortNumber(invested)}</Data>
+        <span>Investment:</span> <Data>{toShortDollar(invested)}</Data>
       </DataRow>
       {!isFounders && (
         <DataRow>
-          <span>Liquidation Preference:</span>
-          <Data color={liquidationPreference < invested ? "danger" : "success"}>
-            {toShortNumber(liquidationPreference)}
+          <span style={{ paddingRight: "5px" }}>Liquidation Preference:</span>
+          <Data
+            color={
+              liquidationPreference < invested && !hasConvertedToCommonShare
+                ? "danger"
+                : "success"
+            }
+          >
+            {toShortDollar(liquidationPreference)}
           </Data>
         </DataRow>
       )}
       <DataRow>
-        <span>participation:</span>
-        <Data>
-          {toShortNumber(participation)}
-          {isCapReached && <SmallText>(Capped)</SmallText>}
-        </Data>
+        <span>Participation:</span>
+        <Data>{toShortDollar(participation)}</Data>
       </DataRow>
       {!isFounders && (
         <VariablesWrapper>
+          {hasConvertedToCommonShare && <GreyOverlay />}
           <Variable>
             <span>Cap:</span>
             <UserInteractionWrapper>
@@ -134,6 +141,36 @@ const Tile = ({
               <label>No</label>
             </div>
           </Variable>
+          <Variable />
+
+          <div>
+            <SmallText minHeight="52px">
+              {!hasConvertedToCommonShare && (
+                <Fragment>
+                  <strong>Capped limited Reached.</strong>
+                  <div>
+                    You can either retain your preferred stock or convert them
+                    to common.
+                  </div>
+                </Fragment>
+              )}
+            </SmallText>
+            <ConvertButton
+              hasConverted={hasConvertedToCommonShare}
+              onClick={() => {
+                shareholders[
+                  currentStakeholder
+                ].hasConvertedToCommonShare = !hasConvertedToCommonShare;
+                shareholders[
+                  currentStakeholder
+                ].payout.isCapReached = !hasConvertedToCommonShare;
+                setShareholders(shareholders);
+                setToggle(!toggle);
+              }}
+            >
+              {hasConvertedToCommonShare ? "Switch back" : "Convert Now!"}
+            </ConvertButton>
+          </div>
         </VariablesWrapper>
       )}
     </ShareHolder>

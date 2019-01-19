@@ -7,7 +7,6 @@ const commonButtonCss = () => css`
   display: inline-flex;
   justify-content: center;
   cursor: pointer;
-  margin: 0 10px;
   transition: all 0.3s;
   color: ${({ theme }) => theme.colorSet.white};
   position: relative;
@@ -17,6 +16,7 @@ const commonButtonCss = () => css`
 
 export const AddButton = styled.div`
   background: ${({ theme }) => theme.colorSet.success};
+  margin-left: 10px;
   ${commonButtonCss()}
 `;
 
@@ -24,19 +24,23 @@ export const RemoveButton = styled.div`
   background: ${({ theme }) => theme.colorSet.danger};
   opacity: ${({ isDisabled }) => (isDisabled ? 0.6 : 1)};
   pointer-events: ${({ isDisabled }) => (isDisabled ? "none" : "all")};
+  margin-right: 10px;
   ${commonButtonCss()};
 `;
 
 export const ShareHolder = styled.div`
   margin: 20px;
   padding: 20px;
-  ${({ theme }) => theme.affects.boxShadow()}
-  transition: transform 0.3s;
   width: 210px;
+  position: relative;
+  background: ${({ isToConfirmConversation }) =>
+    isToConfirmConversation ? "#ddd" : "inherit"};
+  ${({ theme }) => theme.elements.boxShadow()}
 `;
 
 export const VariablesWrapper = styled.div`
   margin-top: 20px;
+  position: relative;
 `;
 
 export const Variable = styled.div`
@@ -72,4 +76,35 @@ export const UserInputNumber = styled.span`
 
 export const UserInteractionWrapper = styled.div`
   display: flex;
+`;
+
+export const ConvertButton = styled.div`
+  background: ${({ theme, hasConverted }) =>
+    hasConverted ? theme.colorSet.warning : theme.colorSet.success};
+  color: #fff;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 900;
+  height: 35px;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transition: 0.3s;
+  ${({ theme }) => theme.elements.boxShadow()}
+  ${({ theme }) => theme.affects.buttonClick()}
+  ${({ theme }) => theme.affects.buttonHover()}
+`;
+
+export const GreyOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: #eee;
+  z-index: 1;
+  opacity: ${({ isVisible }) => (isVisible ? 0 : 1)};
+  transition: opacity 0.3s;
 `;
