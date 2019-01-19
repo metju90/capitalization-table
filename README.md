@@ -15,10 +15,14 @@ As already stated, I focused on getting the product to work properly and when i 
 
 Excluding `App.js` all source code is of a good standard. But if I had to judge my own code, I would raise some flags when seeing the mentioned file.
 
-If you would like to see neat solution, check out the following:
+If you would like to see neat solutions, check out the following:
+
 [Ginetta's Challenge - frontend only](https://github.com/metju90/search-github-users)
+
 [Postcode - Fullstack (containers,FE,BE)](https://github.com/metju90/postcodes)
+
 [R3PI's Challenge - frontend only](https://github.com/metju90/R3PI)
+
 
 ## Domain knowledge
 
