@@ -8,16 +8,11 @@ const commonButtonCss = () => css`
   justify-content: center;
   cursor: pointer;
   margin: 0 10px;
-  position: relative;
   transition: all 0.3s;
-
-  &:active {
-    outline: 0;
-    top: 1px;
-  }
-  &:hover {
-    opacity: 0.8;
-  }
+  color: ${({ theme }) => theme.colorSet.white};
+  position: relative;
+  ${({ theme }) => theme.affects.buttonClick()}
+  ${({ theme }) => theme.affects.buttonHover()}
 `;
 
 export const AddButton = styled.div`
@@ -35,7 +30,7 @@ export const RemoveButton = styled.div`
 export const ShareHolder = styled.div`
   margin: 20px;
   padding: 20px;
-  ${({ theme }) => theme.elements.boxShadow()}
+  ${({ theme }) => theme.affects.boxShadow()}
   transition: transform 0.3s;
   width: 210px;
 `;
@@ -50,7 +45,7 @@ export const Variable = styled.div`
   justify-content: space-between;
 `;
 
-export const Result = styled.div`
+export const DataRow = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;

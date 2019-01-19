@@ -19,7 +19,7 @@ export default shareholders => {
       s.sharesInPercentage =
         Math.round(((100 * s.shares) / totalShares).toFixed(2) * 100) / 100;
 
-      console.log("wtf??? ", s.sharesInPercentage);
+      //   console.log("wtf??? ", s.sharesInPercentage);
       return s;
     });
 };

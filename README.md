@@ -10,7 +10,9 @@ Having said that, I may have used terms/wording which a person familiar in this 
 
 ## Features
 
-- Seniority Structure: Standard. The latest Serie has precedent over others for preferred shares.
+- Seniority Structure: Standard.
+  The latest Serie has precedent over others for preferred shares.
+  Meaning the preferred stocked of the last round of investors is the most prioritized.
 - Dynamic settings. Edit on the go and see instant results (hopefully good ones :)
 
 ## Biggest obstacle

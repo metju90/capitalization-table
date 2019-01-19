@@ -6,7 +6,7 @@ import {
   RemoveButton,
   Variable,
   VariablesWrapper,
-  Result,
+  DataRow,
   Data,
   Title,
   UserInputNumber,
@@ -17,11 +17,11 @@ import { SmallText, Input } from "../../skin";
 const Tile = ({
   title,
   sharesInPercentage,
-  payout: { liquidationPreference, paricipation, isCapReached },
+  payout: { liquidationPreference, participation, isCapReached },
   invested,
   cap,
   multiplier,
-  participating,
+  isParticipating,
   shareholders,
   setShareholders,
   currentStakeholder,
@@ -32,28 +32,28 @@ const Tile = ({
   return (
     <ShareHolder>
       <Title>{title}</Title>
-      <Result>
+      <DataRow>
         <span>Shareholding:</span> <Data>{sharesInPercentage}%</Data>
-      </Result>
+      </DataRow>
 
-      <Result>
+      <DataRow>
         <span>Investment:</span> <Data>{toShortNumber(invested)}</Data>
-      </Result>
+      </DataRow>
       {!isFounders && (
-        <Result>
+        <DataRow>
           <span>Liquidation Preference:</span>
           <Data color={liquidationPreference < invested ? "danger" : "success"}>
             {toShortNumber(liquidationPreference)}
           </Data>
-        </Result>
+        </DataRow>
       )}
-      <Result>
-        <span>Paricipation:</span>
+      <DataRow>
+        <span>participation:</span>
         <Data>
-          {toShortNumber(paricipation)}
-          <SmallText>{isCapReached && `(Capped)`}</SmallText>
+          {toShortNumber(participation)}
+          {isCapReached && <SmallText>(Capped)</SmallText>}
         </Data>
-      </Result>
+      </DataRow>
       {!isFounders && (
         <VariablesWrapper>
           <Variable>
@@ -85,7 +85,7 @@ const Tile = ({
             <span>multiplier:</span>
             <UserInteractionWrapper>
               <RemoveButton
-                isDisabled={multiplier < 1}
+                isDisabled={multiplier < 2}
                 onClick={() => {
                   shareholders[currentStakeholder].multiplier = multiplier - 1;
                   setShareholders(shareholders);
@@ -107,29 +107,29 @@ const Tile = ({
             </UserInteractionWrapper>
           </Variable>
           <Variable>
-            <span>participating:</span>
+            <span>Participation:</span>
             <div>
               <input
                 type="radio"
                 onChange={e => {
-                  shareholders[currentStakeholder].participating = true;
+                  shareholders[currentStakeholder].isParticipating = true;
                   setShareholders(shareholders);
                   setToggle(!toggle);
                 }}
-                name={`participating-${currentStakeholder}`}
-                checked={participating}
+                name={`isParticipating-${currentStakeholder}`}
+                checked={isParticipating}
               />
               <label>Yes</label>
               <input
                 type="radio"
                 onChange={e => {
                   console.log("aaa");
-                  shareholders[currentStakeholder].participating = false;
+                  shareholders[currentStakeholder].isParticipating = false;
                   setShareholders(shareholders);
                   setToggle(!toggle);
                 }}
-                name={`participating-${currentStakeholder}`}
-                checked={!participating}
+                name={`isParticipating-${currentStakeholder}`}
+                checked={!isParticipating}
               />
               <label>No</label>
             </div>

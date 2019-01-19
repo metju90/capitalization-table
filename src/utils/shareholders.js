@@ -3,10 +3,10 @@ import { calculateSharesinPercentage } from "./index";
 const investorsCommonVariables = {
   cap: 2,
   multiplier: 1,
-  participating: true,
+  isParticipating: true,
   payout: {
     liquidationPreference: 0,
-    paricipation: 0
+    participation: 0
   }
 };
 
@@ -14,10 +14,10 @@ const sharesHoldersData = {
   founders: {
     title: "Founders",
     shares: 1000000,
-    participating: true,
+    isParticipating: true,
     invested: 0,
     payout: {
-      paricipation: 0
+      participation: 0
     }
   },
   serie_a: {

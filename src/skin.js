@@ -15,10 +15,16 @@ export const SmallText = styled.div`
 export const ResetData = styled.a`
   cursor: pointer;
   margin-left: 10px;
+  background: ${({ theme }) => theme.colorSet.grey};
+  color: ${({ theme }) => theme.colorSet.darker};
+  padding: 5px;
+  font-weight: 300;
+  border-radius: 0.25rem;
+  ${({ theme }) => theme.affects.buttonClick()};
 `;
 
 export const Input = styled.input`
-  background: transparent;
+  background: #ddd;
   border: 0;
   color: ${({ theme }) => theme.colorSet.dark};
   font-size: ${({ isExitInput }) => (isExitInput ? "16px" : "12px")};
@@ -26,13 +32,13 @@ export const Input = styled.input`
   font-family: inherit;
   position: relative;
   padding: 10px;
-  width: ${({ isExitInput }) => (isExitInput ? "200px" : "50px")};
-  height: ${({ isExitInput }) => (isExitInput ? "20px" : "50px")};
+  width: 200px;
+  height: 29px;
   -webkit-appearance: none;
+  border-radius: 0.25rem;
   &:focus {
     outline: 0;
     background-color: ${({ theme }) => theme.colorSet.grey};
-    border-radius: 0.25rem;
   }
 `;
 

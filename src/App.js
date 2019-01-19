@@ -25,54 +25,61 @@ const defaultShareHoldersData = getShareholdersDefaultData();
 const App = () => {
   const [exitValue, setExitValue] = useState(twentyFiveMillion);
   const [toggle, setToggle] = useState(false);
+  const [cappedInvestors, setCappedInvestors] = useState();
   const [shareholders, setShareholders] = useState(
     cloneDeep(defaultShareHoldersData)
   );
 
-  // To update the "global" shareholders data
-  // useEffect(() => {
-
-  // }, defaultShareHoldersData)
-  //console.log("..... the default ", defaultShareHoldersData);
   useEffect(
     () => {
-      console.log("testing!!!");
+      if (cappedInvestors) {
+        console.log("<<<<!!!!>>>>>>> CAPPED INVESTOR <<<<!!!!>>>>>>>");
+        console.log(cappedInvestors);
+        console.log("<<<<!!!!>>>>>>> CAPPED INVESTOR <<<<!!!!>>>>>>>");
+      }
+    },
+    [cappedInvestors]
+  );
+
+  useEffect(
+    () => {
+      // console.log("testing!!!");
       if (exitValue != "aaaaa") {
-        console.log("xi zobb", exitValue);
+        // console.log("xi zobb", exitValue);
         let balanceFromExit;
 
-        // Giving the venture investor the preference
+        // Giving the venture investor their preference
         Object.keys(shareholders)
           .reverse() // To start from the latest Series
           .reduce((balance, currentInvestor) => {
             const {
               invested,
               multiplier,
-              payout: { paricipation }
+              payout: { participation }
             } = shareholders[currentInvestor];
 
             if (currentInvestor === "founders") {
-              shareholders[currentInvestor].payout.paricipation = 0;
+              shareholders[currentInvestor].payout.participation = 0;
               return balance;
             }
 
             if (balance === 0) {
               shareholders[currentInvestor].payout = {
                 liquidationPreference: 0,
-                paricipation
+                participation
               };
             }
             // if there is less balance than investment
             if (balance <= invested * multiplier) {
               shareholders[currentInvestor].payout = {
-                paricipation: 0,
+                participation: 0,
                 liquidationPreference: balance
               };
               balance = 0;
             }
             if (balance > invested * multiplier) {
               shareholders[currentInvestor].payout = {
-                paricipation,
+                participation,
                 liquidationPreference:
                   shareholders[currentInvestor].invested *
                   shareholders[currentInvestor].multiplier
@@ -90,9 +97,9 @@ const App = () => {
         // ugly hack to reset founders payout if there is no balance left
         if (!balanceFromExit) {
           // console.log(shareholders, shareholders.founders);
-          shareholders[0].payout.paricipation = 0;
+          shareholders[0].payout.participation = 0;
         }
-        console.log("!!!!", balanceFromExit);
+        // console.log("!!!!", balanceFromExit);
         // Sharing the remaing balance between all shareholders
         // (assuming all share holders are participants without cap)
         if (balanceFromExit) {
@@ -102,11 +109,11 @@ const App = () => {
            */
           Object.keys(shareholders).reduce((balance, currentInvestor, key) => {
             const {
-              payout: { paricipation, liquidationPreference },
+              payout: { participation, liquidationPreference },
               sharesInPercentage,
               invested,
               cap,
-              participating
+              isParticipating
             } = shareholders[currentInvestor];
             const doesExceedCap =
               liquidationPreference + balance * (sharesInPercentage / 100) >
@@ -115,17 +122,23 @@ const App = () => {
             if (doesExceedCap) {
               shareholders[currentInvestor].payout = {
                 liquidationPreference,
-                paricipation: participating ? invested * (cap - 1) : 0,
+                participation: isParticipating ? invested * (cap - 1) : 0,
                 isCapReached: true
               };
-            }
-
-            if (doesExceedCap || !participating) {
-              investorsWhichExceedsCap.push(currentInvestor);
+              // cappedInvestors.push(shareholders[currentInvestor]);
+              console.log("current capped investors>???? ", cappedInvestors);
+              setCappedInvestors([
+                shareholders[currentInvestor],
+                { ...cappedInvestors }
+              ]);
               calculateSharesinPercentage(shareholders);
             }
 
-            if (!participating) {
+            if (doesExceedCap || !isParticipating) {
+              investorsWhichExceedsCap.push(currentInvestor);
+            }
+
+            if (!isParticipating) {
               return (balance = balance * (sharesInPercentage / 100));
             }
             return balance;
@@ -137,11 +150,11 @@ const App = () => {
            */
           Object.keys(shareholders).reduce((balance, currentInvestor) => {
             const {
-              payout: { paricipation, liquidationPreference },
+              payout: { participation, liquidationPreference },
               sharesInPercentage,
               invested,
               cap,
-              participating
+              isParticipating
             } = shareholders[currentInvestor];
             if (investorsWhichExceedsCap.includes(currentInvestor))
               return balance;
@@ -160,12 +173,12 @@ const App = () => {
             );
             shareholders[currentInvestor].payout = {
               liquidationPreference,
-              paricipation: participating
+              participation: isParticipating
                 ? balance *
                   (shareholders[currentInvestor].sharesInPercentage / 100)
                 : 0
             };
-            if (!participating) {
+            if (!isParticipating) {
               balance =
                 balance *
                 (shareholders[currentInvestor].sharesInPercentage / 100);

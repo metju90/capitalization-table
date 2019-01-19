@@ -7,26 +7,26 @@ const workoutInvestorsPreferences = ({ shareholders, setShareholders }) =>
       const {
         invested,
         multiplier,
-        payout: { paricipation }
+        payout: { participation }
       } = shareholders[currentInvestor];
 
       if (balance === 0) {
         shareholders[currentInvestor].payout = {
           liquidationPreference: 0,
-          paricipation
+          participation
         };
       }
       // if there is less balance than investment
       if (balance <= invested * multiplier) {
         shareholders[currentInvestor].payout = {
-          paricipation: 0,
+          participation: 0,
           liquidationPreference: balance
         };
         balance = 0;
       }
       if (balance > invested * multiplier) {
         shareholders[currentInvestor].payout = {
-          paricipation,
+          participation,
           liquidationPreference:
             shareholders[currentInvestor].invested *
             shareholders[currentInvestor].multiplier
