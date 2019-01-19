@@ -123,6 +123,7 @@ const Tile = ({
               <input
                 type="radio"
                 onChange={e => {
+                  console.log("aaa");
                   shareholders[currentStakeholder].participating = false;
                   setShareholders(shareholders);
                   setToggle(!toggle);

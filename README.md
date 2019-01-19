@@ -1,8 +1,3 @@
-## Features
-
-- Seniority Structure: Standard. The latest Serie has precedent over others.
-- Limited but dynamic settings. Capping, multiplying and participating.
-
 ## Approach to build the app.
 
 I am a fond of cool features and nice code. But my main objective is to get this challenging task to work properly. Once I do that, I will refactor my code.
@@ -12,6 +7,11 @@ I am a fond of cool features and nice code. But my main objective is to get this
 I learned what Liquidation preference is on Thursday evening. To be honest with you, I even had to go through investopedia to clarify Liquidation =)
 
 Having said that, I may have used terms/wording which a person familiar in this domain may find it inappropriate or even worse, not logical. If by the time you are reading this you had already experience this, I am sorry. Feel free to correct where you deem is not good.
+
+## Features
+
+- Seniority Structure: Standard. The latest Serie has precedent over others for preferred shares.
+- Dynamic settings. Edit on the go and see instant results (hopefully good ones :)
 
 ## Biggest obstacle
 

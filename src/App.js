@@ -86,13 +86,8 @@ const App = () => {
           }, exitValue);
 
         setShareholders(shareholders);
-        console.log("!!!!", balanceFromExit);
-        // if (balanceFromExit === 0) {
-        //   setShareholders(shareholders);
-        //   return;
-        // }
 
-        // ugly hack
+        // ugly hack to reset founders payout if there is no balance left
         if (!balanceFromExit) {
           // console.log(shareholders, shareholders.founders);
           shareholders[0].payout.paricipation = 0;
@@ -118,12 +113,15 @@ const App = () => {
               invested * cap;
 
             if (doesExceedCap) {
-              investorsWhichExceedsCap.push(currentInvestor);
               shareholders[currentInvestor].payout = {
                 liquidationPreference,
-                paricipation: invested * (cap - 1),
+                paricipation: participating ? invested * (cap - 1) : 0,
                 isCapReached: true
               };
+            }
+
+            if (doesExceedCap || !participating) {
+              investorsWhichExceedsCap.push(currentInvestor);
               calculateSharesinPercentage(shareholders);
             }
 
