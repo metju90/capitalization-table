@@ -8,9 +8,9 @@ I am a fond of cool features and neat code. But my main objective was to get thi
 
 ## Quality of code
 
-:warning: Warning!. Wet and not-so-nice code can be seen in `App.js` :warning:
+:warning: Warning! :warning: Wet and not-so-nice code can be seen in one particular file.
 
-I usually put great effort into getting my code `WET` and neat.
+I usually put great effort into getting my code dry and neat.
 As already stated, I focused on getting the product to work properly and when i did, I attempted to refactor (for a long 3 hours) the code but there were too many stuff breaking. So instead of trying to refactor my code, I invested more time into adding more features.
 
 Excluding `App.js` all source code is of a good standard. But if I had to judge my own code, I would raise some flags when seeing the mentioned file.
