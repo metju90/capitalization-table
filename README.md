@@ -33,19 +33,15 @@ If you would like to see neat solution, check out the following:
 ## Features
 
 - **Seniority Structure: Standard**
-
   The latest group of investors have precedent over others for preferred shares.
 
 - **Dynamic settings**
-
   Edit on the go and see instant results (hopefully good ones :) )
 
 - **Multiplier**
-
   From the brief and basic research which I did, and I hope I got this right, an investors can have a multiplier which would multiply his preferred shares. By default, this is set to 1.
 
 - **Conversion option**
-
   Initially, I added conversion option for the investors which reaches the cap. But then was I was reading your examples again, at \$60m Investor C does not reach the x1 cap
 
 ## Domain knowledge
@@ -71,7 +67,6 @@ UX design is an area which I consider myself better in comparison with UI. Whils
 ## Technical problems which I encountered
 
 - **Not in full control of applications state**
-
   It's been a while since I built an application of this scale (or bigger) without using state management libraries such as Redux.
 
   Numbers were changing but why and which part of the code was changing it I wasn't sure. Needles to say, not having full control of the application state is not the best developer experience one can have. Lesson learned, for non-trivial application I will ensure state management is handled better in the future.
