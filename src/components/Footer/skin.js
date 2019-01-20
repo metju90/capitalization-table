@@ -5,7 +5,7 @@ export const Footer = styled.div`
   background: #ddd;
   align-items: center;
   justify-content: center;
-  height: 70px;
+  height: 40px;
   position: fixed;
   z-index: 2;
   bottom: 0;

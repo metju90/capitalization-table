@@ -20,7 +20,8 @@ import uuid from "uuid";
 import Footer from "./components/Footer";
 
 const oneMillion = 1000000;
-const twentyFiveMillion = 35000000;
+const defaultExit =
+  new URL(window.location.href).searchParams.get("exit") || 25000000;
 const defaultShareHoldersData = getShareholdersDefaultData();
 const wait = ms => {
   var start = Date.now(),
@@ -30,8 +31,9 @@ const wait = ms => {
   }
 };
 const App = () => {
-  const [exitValue, setExitValue] = useState(twentyFiveMillion);
+  const [exitValue, setExitValue] = useState(defaultExit);
   const [toggle, setToggle] = useState(false);
+  const [preferredStock, setPreferredStock] = useState([]);
   const [cappedInvestors, setCappedInvestors] = useState([]);
   const [commonStockSum, setCommonStockSum] = useState(0);
   const [shareholders, setShareholders] = useState(
@@ -70,6 +72,20 @@ const App = () => {
               participation,
               liquidationPreference: 0
             };
+
+            // if investor converted, remove from capped list (if they are capped)
+            // this needs major refactor!
+
+            const isInvestorAlreadyCapped = cappedInvestors.find(
+              i => i.title === shareholders[currentInvestorKey].title
+            );
+            if (isInvestorAlreadyCapped) {
+              setCappedInvestors(
+                cappedInvestors.filter(
+                  i => i.title !== shareholders[currentInvestorKey].title
+                )
+              );
+            }
             return balance;
           }
 
@@ -79,7 +95,9 @@ const App = () => {
               participation: 0,
               liquidationPreference: balance
             };
+            console.log("bingp!!!!", balance);
             balance = 0;
+            setShareholders(shareholders);
           }
           const currentPayout = balance * sharesInPercentage;
           // console.log("NETX PAOUT ISSS ", sharesInPercentage, currentPayout);
@@ -137,6 +155,10 @@ const App = () => {
           console.log(sharesInPercentage / 100, invested * (cap - 1), balance);
 
           if (doesExceedCap) {
+            console.log(
+              "GET HER EONLY IN CASE OF CAP",
+              shareholders[currentInvestorKey].title
+            );
             shareholders[currentInvestorKey].payout = {
               liquidationPreference,
               // cap - 1 because liquidation preference is considered as x1.
@@ -145,19 +167,20 @@ const App = () => {
               participation: invested * (cap - 1),
               isCapReached: true
             };
-            // cappedInvestors.push(shareholders[currentInvestorKey]);
+
+            // Add investors in the capp list
+            // If they aren't already.
             const isInvestorAlreadyCapped = cappedInvestors.find(
               i => i.title === shareholders[currentInvestorKey].title
             );
-            console.log("how many times here??? ----");
             if (!isInvestorAlreadyCapped) {
               setCappedInvestors([
                 shareholders[currentInvestorKey],
                 ...cappedInvestors
               ]);
-              console.log("how many times here??? ", cappedInvestors);
             }
-            calculateSharesinPercentage(shareholders);
+            console.log("before!!!!! ", shareholders[currentInvestorKey].title);
+            setShareholders(calculateSharesinPercentage(shareholders));
           }
           console.log("aaaa!!!", shortNumber(balance));
 
@@ -167,9 +190,6 @@ const App = () => {
             );
           }
 
-          // if (!isParticipating) {
-          //   return (balance = balance * (sharesInPercentage / 100));
-          // }
           return balance;
         }, commonStockSum);
 
@@ -183,46 +203,57 @@ const App = () => {
             sharesInPercentage,
             invested,
             cap,
-            hasConvertedToCommonShare
+            hasConvertedToCommonShare,
+            participationPercentage
           } = shareholders[currentInvestorKey];
           console.log("dafuq>? ", investorsWhichExceedsCap);
           if (
             investorsWhichExceedsCap.includes(
               shareholders[currentInvestorKey].title
             )
-          )
+          ) {
             return balance;
-          // Check for any capped investors and change the shareholding
-          if (investorsWhichExceedsCap.length && !hasConvertedToCommonShare) {
-            investorsWhichExceedsCap.forEach(cappedInvestor => {
-              console.log("looping through capped investors");
-              // shareholders[currentInvestorKey].sharesInPercentage +=
-              //   shareholders[cappedInvestor].sharesInPercentage *
-              //   (sharesInPercentage / 100);
-            });
           }
           console.log(
-            "hi ther!!!",
+            "ok now here!!",
             shareholders[currentInvestorKey].title,
-            shareholders[currentInvestorKey].sharesInPercentage
+            sharesInPercentage,
+            balance * (sharesInPercentage / 100)
+          );
+
+          // Need to substract capped investors common share!
+          const getCommonShareAfterCappers = () => {
+            let cappedInvesorsCommonShares = 0;
+            cappedInvestors.map(
+              i => (cappedInvesorsCommonShares += i.payout.participation)
+            );
+            // console.log(
+            //   "cappedInvesorsCommonShares ",
+            //   cappedInvesorsCommonShares
+            // );
+            return balance - cappedInvesorsCommonShares;
+          };
+          console.log(
+            "what are the numbers here??",
+            cappedInvestors,
+            balance,
+            shareholders[currentInvestorKey].title,
+            getCommonShareAfterCappers(),
+            sharesInPercentage / 100,
+            getCommonShareAfterCappers() * (sharesInPercentage / 100)
           );
           shareholders[currentInvestorKey].payout = {
             liquidationPreference,
             participation:
-              balance *
-              (shareholders[currentInvestorKey].sharesInPercentage / 100)
+              getCommonShareAfterCappers() * (participationPercentage / 100)
           };
-          // if (!isParticipating) {
-          //   balance =
-          //     balance *
-          //     (shareholders[currentInvestorKey].sharesInPercentage / 100);
-          //   setShareholders(shareholders);
-          // }
+
           return balance;
         }, commonStockSum);
 
         investorsWhichExceedsCap = [];
-        setShareholders(shareholders);
+        // To reset the shares in % on each change.
+        setShareholders(calculateSharesinPercentage(shareholders));
       }
     },
     [exitValue, toggle, commonStockSum, cappedInvestors]
@@ -243,7 +274,7 @@ const App = () => {
             onClick={() => {
               setShareholders(cloneDeep(defaultShareHoldersData));
               setCappedInvestors([]);
-              setExitValue(twentyFiveMillion);
+              setExitValue(defaultExit);
             }}
           >
             Reset

@@ -29,7 +29,8 @@ const Tile = ({
   currentStakeholder,
   toggle,
   setToggle,
-  hasConvertedToCommonShare
+  hasConvertedToCommonShare,
+  participationPercentage
 }) => {
   const isFounder = title === "Founders";
   return (
@@ -37,12 +38,11 @@ const Tile = ({
       <Title>{title}</Title>
       <DataRow>
         <span>Shares:</span>
-        <Data>
-          <SmallText inLine>({sharesInPercentage}%)</SmallText>
+        <Data textAlign="right">
+          <SmallText>({sharesInPercentage}%)</SmallText>
           {shortNumber(shares)}
         </Data>
       </DataRow>
-
       <DataRow>
         <span>Investment:</span> <Data>${shortNumber(invested)}</Data>
       </DataRow>
@@ -62,7 +62,10 @@ const Tile = ({
       )}
       <DataRow>
         <span>Participation:</span>
-        <Data>${shortNumber(participation)}</Data>
+        <Data textAlign="right">
+          {!isCapReached && <SmallText>({participationPercentage}%)</SmallText>}
+          ${shortNumber(participation)}
+        </Data>
       </DataRow>
       {!isFounder && (
         <VariablesWrapper>
@@ -118,37 +121,37 @@ const Tile = ({
             </UserInteractionWrapper>
           </Variable>
           <div>
-            <SmallText isCappMessaged>
-              {!hasConvertedToCommonShare && isCapReached && (
-                <Fragment>
+            {!hasConvertedToCommonShare && isCapReached && (
+              <Fragment>
+                <SmallText isCappMessaged>
                   <strong>Capped limited Reached.</strong>
                   <div>
                     You can either retain your preferred stock or convert them
                     to common.
                   </div>
-                </Fragment>
-              )}
-            </SmallText>
-            <ConvertButton
-              title={
-                hasConvertedToCommonShare
-                  ? "Convert back to preferred stocks"
-                  : " Convert to common stocks"
-              }
-              hasConverted={hasConvertedToCommonShare}
-              onClick={() => {
-                shareholders[
-                  currentStakeholder
-                ].hasConvertedToCommonShare = !hasConvertedToCommonShare;
-                shareholders[
-                  currentStakeholder
-                ].payout.isCapReached = !hasConvertedToCommonShare;
-                setShareholders(shareholders);
-                setToggle(!toggle);
-              }}
-            >
-              {hasConvertedToCommonShare ? "Switch back" : "Convert Now!"}
-            </ConvertButton>
+                </SmallText>
+                <ConvertButton
+                  title={
+                    hasConvertedToCommonShare
+                      ? "Convert back to preferred stocks"
+                      : " Convert to common stocks"
+                  }
+                  hasConverted={hasConvertedToCommonShare}
+                  onClick={() => {
+                    shareholders[
+                      currentStakeholder
+                    ].hasConvertedToCommonShare = !hasConvertedToCommonShare;
+                    shareholders[
+                      currentStakeholder
+                    ].payout.isCapReached = !hasConvertedToCommonShare;
+                    setShareholders(shareholders);
+                    setToggle(!toggle);
+                  }}
+                >
+                  {hasConvertedToCommonShare ? "Switch back" : "Convert Now!"}
+                </ConvertButton>
+              </Fragment>
+            )}
           </div>
         </VariablesWrapper>
       )}

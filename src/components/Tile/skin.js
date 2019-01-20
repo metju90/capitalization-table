@@ -29,9 +29,9 @@ export const RemoveButton = styled.div`
 `;
 
 export const ShareHolder = styled.div`
-  margin: 20px;
+  margin: 0 20px;
   padding: 20px;
-  width: 210px;
+  width: 260px;
   position: relative;
   ${({ theme }) => theme.elements.boxShadow()}
   background: ${({ theme }) => theme.colorSet.whitest};  
@@ -61,11 +61,12 @@ export const DataRow = styled.div`
 
 export const Data = styled.strong`
   color: ${({ color, theme }) => theme.colorSet[color]};
+  text-align: ${({ textAlign }) => (textAlign ? textAlign : "left")};
 `;
 
 export const Title = styled.h2`
   text-align: center;
-  margin-top: 0;
+  margin: 0;
 `;
 
 export const UserInputNumber = styled.span`
@@ -105,7 +106,7 @@ export const GreyOverlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 64px;
   background: ${({ theme }) => theme.colorSet.whitest};
   z-index: 1;
   opacity: ${({ isVisible }) => (isVisible ? 0 : 1)};

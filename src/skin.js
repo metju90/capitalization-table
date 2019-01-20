@@ -9,10 +9,9 @@ export const SmallText = styled.span`
   color: ${({ theme }) => theme.colorSet.secondary};
   font-size: 11px;
   font-weight: 200;
-  display: ${({ inLine }) => (inLine ? "inline-block" : "block")};
+  display: block;
   min-height: ${({ isCappMessaged }) => (isCappMessaged ? "52px" : "inherit")};
-  ${({ isCappMessaged }) => isCappMessaged && "margin: 15px 0"};
-  ${({ inLine }) => inLine && "margin-right: 5px"};
+  ${({ isCappMessaged }) => isCappMessaged && "margin: 10px 0"};
 `;
 
 export const ResetData = styled.a`
