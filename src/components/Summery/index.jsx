@@ -36,7 +36,7 @@ export default ({ exitValue, commonStockSum, cappedParticipation }) => (
     <ContentWrapper>
       <ToolTip
         message={
-          "Stock which is equally distributed to all eligible shareholders"
+          "Stock which is distributed pro-rata to all eligible shareholders"
         }
       />
       <Header>
