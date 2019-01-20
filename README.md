@@ -2,11 +2,18 @@
 
 [Demo link here](http://ledgy.matthewbarbara.com)
 
-To test the application in the most
+You can add URL parameter `?exit=n`.
+Examples:
+
+http://ledgy.matthewbarbara.com?exit=60000000
+
+http://ledgy.matthewbarbara.com?exit=45000000
+
+http://ledgy.matthewbarbara.com?exit=35000000
 
 ## Small note.
 
-When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days.
+When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days with my previous employer.
 
 By the early hours of Friday morning I had a working calculator with no capping and conversions :trophy:
 
@@ -16,7 +23,7 @@ It was a great deja vu feeling!
 
 :warning: Warning! :warning:
 
-Wet, nasty and not-so-nice code can be seen in one particular file.
+Wet, nasty and not-so-nice code is guaranteed to be seen in one particular file.
 
 I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead, I focus only on getting to logic working right. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
 
@@ -46,6 +53,10 @@ If you would like to see neat solutions, check out the following:
 
 - **Conversion option**\
   When you reach the cap, you have the option to convert the investor's preferred shares to common. If you take the option and then changes your mind, dont worry, you are one click away to revert back.
+
+- **Tools tips**\
+  Added tool tips to help you understand my reasoning.
+  
 
 ## Domain knowledge
 
