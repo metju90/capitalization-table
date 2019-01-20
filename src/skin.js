@@ -46,7 +46,10 @@ export const Input = styled.input`
 
 export const Summary = styled.div`
   font-weight: normal;
-  font-size: normal;
+  background: #fff;
+  padding: 10px;
+  min-width: 310px;
+  ${({ theme }) => theme.elements.boxShadow()}
   big {
     font-size: 20px;
     font-weight: 900;

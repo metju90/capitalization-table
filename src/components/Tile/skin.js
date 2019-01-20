@@ -33,9 +33,8 @@ export const ShareHolder = styled.div`
   padding: 20px;
   width: 210px;
   position: relative;
-  background: ${({ isToConfirmConversation }) =>
-    isToConfirmConversation ? "#ddd" : "inherit"};
   ${({ theme }) => theme.elements.boxShadow()}
+  background: #fff;
 `;
 
 export const VariablesWrapper = styled.div`
@@ -103,7 +102,7 @@ export const GreyOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 70px;
-  background: #eee;
+  background: #fff;
   z-index: 1;
   opacity: ${({ isVisible }) => (isVisible ? 0 : 1)};
   transition: opacity 0.3s;

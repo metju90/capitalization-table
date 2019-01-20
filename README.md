@@ -2,23 +2,44 @@
 
 [Demo link here](http://ledgy.matthewbarbara.com)
 
-## Approach to build the app.
+## Small note.
 
-I am a fond of cool features and neat code. But my main objective was to get this challenging task to work properly. Then, once I do that, I thought, It would not take much time to refactor the code and utilize modern features.
+When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days.
+
+By the early hours of Friday morning I had a working calculator with no capping and conversions :trophy:
+
+It was a great deja vu feeling!
 
 ## Quality of code
 
-:warning: Warning!. Wet and not-so-nice code can be seen in `App.js` :warning:
+:warning: Warning! :warning:
 
-I usually put great effort into getting my code `WET` and neat.
-As already stated, I focused on getting the product to work properly and when i did, I attempted to refactor (for a long 3 hours) the code but there were too many stuff breaking. So instead of trying to refactor my code, I invested more time into adding more features.
+Wet and not-so-nice code can be seen in one particular file.
 
-Excluding `App.js` all source code is of a good standard. But if I had to judge my own code, I would raise some flags when seeing the mentioned file.
+I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead to focus only on getting to logic working right first. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
+
+I thought that when I will have a working calculator, it should not be as challenging to refactor my code. But damn, how wrong I was!
+
+Excluding `App.js` all source code is of a good standard. But if I had to judge my own code, I would raise eyebrows when seeing the mentioned file.
 
 If you would like to see neat solution, check out the following:
+
 [Ginetta's Challenge - frontend only](https://github.com/metju90/search-github-users)
-[Postcode - Fullstack (containers,FE,BE)](https://github.com/metju90/postcodes)
+
+[Postcode - Fullstack (including docker and database)](https://github.com/metju90/postcodes)
+
 [R3PI's Challenge - frontend only](https://github.com/metju90/R3PI)
+
+## Features
+
+- Seniority Structure: Standard
+  The latest group of investors have precedent over others for preferred shares.
+- Dynamic settings
+  Edit on the go and see instant results (hopefully good ones :) )
+- Multiplier
+  From the brief and basic research which I did, and I hope I got this right, an investors can have a multiplier which would multiply his preferred shares. By default, this is set to 1.
+- Conversion option
+  Initially, I added conversion option for the investors which reaches the cap. But then was I was reading your examples again, at \$60m Investor C does not reach the x1 cap
 
 ## Domain knowledge
 
@@ -26,20 +47,23 @@ I learned what Liquidation preference is on Thursday evening. To be honest with 
 
 Having said that, I may have used terms/wording which a person familiar in this domain may find it inappropriate or even worse, not logical. If by the time you are reading this you had already experience this, I am sorry. Feel free to correct where you deem is not good.
 
-## Features
-
-- Seniority Structure: Standard
-  The latest Serie has precedent over others for preferred shares.
-  Meaning the preferred stocked of the last round of investors is the most prioritized.
-- Dynamic settings
-  Edit on the go and see instant results (hopefully good ones :) )
-- Multiplier
-  From the brief and basic research which I did, and I hope I got this right, an investors can have a multiplier which would multiply his preferred shares. By default, this is set to 1.
-
-## Biggest obstacle
+## Obstacles
 
 Before I rolled my sleeves to start coding, I spent a around 2-3 hours trying to understand the logic and read the tutorials which you provided in your gist. This itself was challenging but I really enjoyed learning about this topic.
 
-When I had a good understanding of whats required, I started coded and produced a not-perfectly working application in a relatively short time.
+When I had a good understanding of whats required, I started coded and produced a working application in a relatively short time.
 
-However, as happens almost to every single time, I am finding it very challenging to come up with a nice UI design. This was definitely the most time consumer. I've built great UI pages in my career but with UI design provided to me. By the time I am writing this, I am still trying to find a good UI design :)
+The logic behind this task is challenging and I did find it hard. Nonetheless I really enjoyed working on the logic.
+
+As happens most of the time I design the UI from scratch, I found it very challenging to come up with a nice one. This was definitely the most time consuming part. I've built complex UI pages in my career but with the UI design being provided to me. After trying several designs, I've settled with one which in my opinion is not very professional. I think (and hope) its sufficient for this challenge.
+
+## UX
+
+UX design is an area which I consider myself better in comparison with UI. Whilst I see big room for improvement on the UI, I feel the UX is good based on this UI.
+
+## Technical problems which I encountered
+
+- Not in full control of applications state
+  It's been a while since I built an application of this scale (or bigger) without using state management libraries such as Redux.
+
+  Numbers were changing but why and which part of the code was changing it I wasn't sure. Needles to say, not having full control of the application state is not the best developer experience one can have. Lesson learned, for non-trivial application I will ensure state management is handled better in the future.

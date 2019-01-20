@@ -67,7 +67,7 @@ const Tile = ({
             <span>Cap:</span>
             <UserInteractionWrapper>
               <RemoveButton
-                isDisabled={cap < 2}
+                isDisabled={cap < 3}
                 onClick={() => {
                   shareholders[currentStakeholder].cap = cap - 1;
                   setShareholders(shareholders);
@@ -76,7 +76,7 @@ const Tile = ({
               >
                 -
               </RemoveButton>
-              <UserInputNumber>{cap}</UserInputNumber>
+              <UserInputNumber>x{cap}</UserInputNumber>
               <AddButton
                 onClick={() => {
                   shareholders[currentStakeholder].cap = cap + 1;
@@ -89,7 +89,7 @@ const Tile = ({
             </UserInteractionWrapper>
           </Variable>
           <Variable>
-            <span>multiplier:</span>
+            <span>Multiplier:</span>
             <UserInteractionWrapper>
               <RemoveButton
                 isDisabled={multiplier < 2}
@@ -101,7 +101,7 @@ const Tile = ({
               >
                 -
               </RemoveButton>
-              <UserInputNumber>{multiplier}</UserInputNumber>
+              <UserInputNumber>x{multiplier}</UserInputNumber>
               <AddButton
                 onClick={() => {
                   shareholders[currentStakeholder].multiplier = multiplier + 1;
@@ -113,39 +113,9 @@ const Tile = ({
               </AddButton>
             </UserInteractionWrapper>
           </Variable>
-          <Variable>
-            <span>Participation:</span>
-            <div>
-              <input
-                type="radio"
-                onChange={e => {
-                  shareholders[currentStakeholder].isParticipating = true;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-                name={`isParticipating-${currentStakeholder}`}
-                checked={isParticipating}
-              />
-              <label>Yes</label>
-              <input
-                type="radio"
-                onChange={e => {
-                  console.log("aaa");
-                  shareholders[currentStakeholder].isParticipating = false;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-                name={`isParticipating-${currentStakeholder}`}
-                checked={!isParticipating}
-              />
-              <label>No</label>
-            </div>
-          </Variable>
-          <Variable />
-
           <div>
             <SmallText minHeight="52px">
-              {!hasConvertedToCommonShare && (
+              {!hasConvertedToCommonShare && isCapReached && (
                 <Fragment>
                   <strong>Capped limited Reached.</strong>
                   <div>
@@ -156,6 +126,11 @@ const Tile = ({
               )}
             </SmallText>
             <ConvertButton
+              title={
+                hasConvertedToCommonShare
+                  ? "Convert back to preferred stocks"
+                  : " Convert to common stocks"
+              }
               hasConverted={hasConvertedToCommonShare}
               onClick={() => {
                 shareholders[

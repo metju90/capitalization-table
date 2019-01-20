@@ -20,7 +20,7 @@ import uuid from "uuid";
 import Footer from "./components/Footer";
 
 const oneMillion = 1000000;
-const twentyFiveMillion = 60000000;
+const twentyFiveMillion = 25000000;
 const defaultShareHoldersData = getShareholdersDefaultData();
 const wait = ms => {
   var start = Date.now(),
@@ -50,43 +50,41 @@ const App = () => {
   );
   useEffect(
     () => {
-      // console.log("xi zobb", exitValue);
-      let balanceFromExit;
-
       // Giving the venture investor their preference
+      // from the exit money.
       Object.keys(shareholders)
-        .reverse() // To start from the latest Series
-        .reduce((balance, currentInvestor) => {
+        .reverse() // To start from the latest investors
+        .reduce((balance, currentInvestorKey) => {
           const {
             invested,
             multiplier,
             payout: { participation },
-            title,
             sharesInPercentage,
             hasConvertedToCommonShare
-          } = shareholders[currentInvestor];
-
+          } = shareholders[currentInvestorKey];
+          // If an investor opted to convert to common stocks,
+          // Do nothing and go to the next investor.
           if (hasConvertedToCommonShare) {
-            console.log("ok!!!! convertedd", currentInvestor);
-            // shareholders[currentInvestor].payout.participation = 0;
-            shareholders[currentInvestor].payout = {
+            console.log("ok!!!! convertedd", currentInvestorKey);
+            shareholders[currentInvestorKey].payout = {
               participation,
               liquidationPreference: 0
             };
             return balance;
           }
 
+          // If no more money left from the exit sum
           if (balance === 0) {
-            shareholders[currentInvestor].payout = {
+            shareholders[currentInvestorKey].payout = {
               liquidationPreference: 0,
               participation
             };
           }
           // if there is less balance than investment
           if (balance <= invested * multiplier) {
-            shareholders[currentInvestor].payout = {
+            shareholders[currentInvestorKey].payout = {
               participation: 0,
-              liquidationPreference: hasConvertedToCommonShare ? 0 : balance
+              liquidationPreference: balance
             };
             balance = 0;
           }
@@ -97,11 +95,11 @@ const App = () => {
             //   "wtf is hapenning here??? ",
             //   toShortDollar(invested * multiplier)
             // );
-            shareholders[currentInvestor].payout = {
+            shareholders[currentInvestorKey].payout = {
               participation,
               liquidationPreference:
-                shareholders[currentInvestor].invested *
-                shareholders[currentInvestor].multiplier
+                shareholders[currentInvestorKey].invested *
+                shareholders[currentInvestorKey].multiplier
             };
             balance = balance - invested * multiplier;
           }
@@ -124,38 +122,42 @@ const App = () => {
         /**
          *  Checks for capped one first
          */
-        Object.keys(shareholders).reduce((balance, currentInvestor, key) => {
+        Object.keys(shareholders).reduce((balance, currentInvestorKey) => {
           const {
             payout: { participation, liquidationPreference },
             sharesInPercentage,
             invested,
             cap,
             isParticipating,
-            hasConvertedToCommonShare
-          } = shareholders[currentInvestor];
+            hasConvertedToCommonShare,
+            multiplier
+          } = shareholders[currentInvestorKey];
 
           if (hasConvertedToCommonShare) {
             return balance;
           }
           const doesExceedCap =
             (liquidationPreference + balance) * (sharesInPercentage / 100) >
-            invested * cap;
+            invested * (cap - 1);
           console.log("current capped investors>???? ", doesExceedCap, balance);
 
           if (doesExceedCap) {
-            shareholders[currentInvestor].payout = {
+            shareholders[currentInvestorKey].payout = {
               liquidationPreference,
-              participation: isParticipating ? invested * cap : 0,
+              // cap - 1 because liquidation preference is considered as x1.
+              // Therefore adding I am reducing the preferrenced stock from
+              // the cap.
+              participation: isParticipating ? invested * (cap - 1) : 0,
               isCapReached: true
             };
-            // cappedInvestors.push(shareholders[currentInvestor]);
+            // cappedInvestors.push(shareholders[currentInvestorKey]);
             const isInvestorAlreadyCapped = cappedInvestors.find(
-              i => i.title === shareholders[currentInvestor].title
+              i => i.title === shareholders[currentInvestorKey].title
             );
             console.log("how many times here??? ----");
             if (!isInvestorAlreadyCapped) {
               setCappedInvestors([
-                shareholders[currentInvestor],
+                shareholders[currentInvestorKey],
                 ...cappedInvestors
               ]);
               console.log("how many times here??? ", cappedInvestors);
@@ -168,7 +170,7 @@ const App = () => {
             doesExceedCap ||
             (!isParticipating && !hasConvertedToCommonShare)
           ) {
-            investorsWhichExceedsCap.push(currentInvestor);
+            investorsWhichExceedsCap.push(currentInvestorKey);
           }
 
           if (!isParticipating) {
@@ -181,7 +183,7 @@ const App = () => {
          *  Uncapped, split the sharesInPercentage of the capped
          *
          */
-        Object.keys(shareholders).reduce((balance, currentInvestor) => {
+        Object.keys(shareholders).reduce((balance, currentInvestorKey) => {
           const {
             payout: { participation, liquidationPreference },
             sharesInPercentage,
@@ -189,36 +191,35 @@ const App = () => {
             cap,
             isParticipating,
             hasConvertedToCommonShare
-          } = shareholders[currentInvestor];
-          if (investorsWhichExceedsCap.includes(currentInvestor))
+          } = shareholders[currentInvestorKey];
+          if (investorsWhichExceedsCap.includes(currentInvestorKey))
             return balance;
           // Check for any capped investors and change the shareholding
           if (investorsWhichExceedsCap.length && !hasConvertedToCommonShare) {
             investorsWhichExceedsCap.forEach(cappedInvestor => {
               // console.log("looping through capped investors");
-              shareholders[currentInvestor].sharesInPercentage +=
-                shareholders[cappedInvestor].sharesInPercentage *
-                (sharesInPercentage / 100);
+              // shareholders[currentInvestorKey].sharesInPercentage +=
+              //   shareholders[cappedInvestor].sharesInPercentage *
+              //   (sharesInPercentage / 100);
             });
           }
           console.log(
             "hi ther!!!",
-            currentInvestor,
+            currentInvestorKey,
             isParticipating,
-            shareholders[currentInvestor].sharesInPercentage
+            shareholders[currentInvestorKey].sharesInPercentage
           );
-          shareholders[currentInvestor].payout = {
+          shareholders[currentInvestorKey].payout = {
             liquidationPreference,
             participation: isParticipating
               ? balance *
-                (shareholders[currentInvestor].sharesInPercentage / 100)
+                (shareholders[currentInvestorKey].sharesInPercentage / 100)
               : 0
           };
           if (!isParticipating) {
             balance =
               balance *
-              (shareholders[currentInvestor].sharesInPercentage / 100);
-            balanceFromExit = balance;
+              (shareholders[currentInvestorKey].sharesInPercentage / 100);
             setShareholders(shareholders);
           }
           return balance;
