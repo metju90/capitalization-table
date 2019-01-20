@@ -5,15 +5,6 @@ export const Container = styled(BsContainer)`
   margin-bottom: 80px;
 `;
 
-export const SmallText = styled.span`
-  color: ${({ theme }) => theme.colorSet.secondary};
-  font-size: 11px;
-  font-weight: 200;
-  display: block;
-  min-height: ${({ isCappMessaged }) => (isCappMessaged ? "52px" : "inherit")};
-  ${({ isCappMessaged }) => isCappMessaged && "margin: 10px 0"};
-`;
-
 export const ResetData = styled.a`
   cursor: pointer;
   margin-left: 10px;
@@ -45,35 +36,6 @@ export const Input = styled.input`
   &:focus {
     outline: 0;
     background-color: ${({ theme }) => theme.colorSet.grey};
-  }
-`;
-
-export const Summary = styled.div`
-  font-weight: normal;
-  background: ${({ theme }) => theme.colorSet.whitest};
-  padding: 5px 15px;
-  min-width: 310px;
-  ${({ theme }) => theme.elements.boxShadow()}
-  big {
-    font-size: 20px;
-    font-weight: 900;
-  }
-  div {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin: 10px 0;
-    flex-wrap: wrap;
-  }
-
-  h3,
-  h4 {
-    margin: 0;
-  }
-
-  span {
-    flex-basis: 100%;
-    display: flex;
   }
 `;
 

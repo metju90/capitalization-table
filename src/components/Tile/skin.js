@@ -52,10 +52,14 @@ export const DataRow = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;
-  align-items: flex-end;
-  padding-top: 15px;
+  align-items: center;
+  padding: 8px 0;
   &:last-of-type {
     margin-bottom: 20px;
+  }
+  span {
+    display: flex;
+    flex: 10 0;
   }
 `;
 

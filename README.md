@@ -2,6 +2,8 @@
 
 [Demo link here](http://ledgy.matthewbarbara.com)
 
+To test the application in the most
+
 ## Small note.
 
 When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days.
@@ -14,9 +16,9 @@ It was a great deja vu feeling!
 
 :warning: Warning! :warning:
 
-Wet and not-so-nice code can be seen in one particular file.
+Wet nasty and not-so-nice code can be seen in one particular file.
 
-I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead to focus only on getting to logic working right first. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
+I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead, I focus only on getting to logic working right. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
 
 I thought that when I will have a working calculator, it should not be as challenging to refactor my code. But damn, how wrong I was!
 

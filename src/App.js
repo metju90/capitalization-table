@@ -1,55 +1,34 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Col, Row } from "styled-bootstrap-grid";
-import {
-  ResetData,
-  Input,
-  Summary,
-  ContentCenter,
-  SmallText,
-  Container
-} from "./skin";
+import { Row } from "styled-bootstrap-grid";
+import { ResetData, Input, ContentCenter, Container } from "./skin";
 import { cloneDeep } from "lodash";
 import {
   shortNumber,
   getShareholdersDefaultData,
-  calculateSharesinPercentage,
-  sharesInPercentage
+  calculateSharesinPercentage
 } from "./utils";
-import Tile from "./components/Tile";
 import uuid from "uuid";
+import Tile from "./components/Tile";
 import Footer from "./components/Footer";
+import Summary from "./components/Summery";
 
-const oneMillion = 1000000;
 const defaultExit =
   new URL(window.location.href).searchParams.get("exit") || 25000000;
 const defaultShareHoldersData = getShareholdersDefaultData();
-const wait = ms => {
-  var start = Date.now(),
-    now = start;
-  while (now - start < ms) {
-    now = Date.now();
-  }
-};
+
 const App = () => {
   const [exitValue, setExitValue] = useState(defaultExit);
   const [toggle, setToggle] = useState(false);
-  const [preferredStock, setPreferredStock] = useState([]);
   const [cappedInvestors, setCappedInvestors] = useState([]);
   const [commonStockSum, setCommonStockSum] = useState(0);
   const [shareholders, setShareholders] = useState(
     cloneDeep(defaultShareHoldersData)
   );
-  // wait(5000);
-  useEffect(
-    () => {
-      if (cappedInvestors) {
-        console.log("<<<<!!!!>>>>>>> CAPPED INVESTOR <<<<!!!!>>>>>>>");
-        console.log(cappedInvestors);
-        console.log("<<<<!!!!>>>>>>> CAPPED INVESTOR <<<<!!!!>>>>>>>");
-      }
-    },
-    [cappedInvestors]
-  );
+
+  useEffect(() => {
+    setCappedInvestors([]);
+  }, exitValue);
+
   useEffect(
     () => {
       // Giving the venture investor their preference
@@ -60,20 +39,18 @@ const App = () => {
           const {
             invested,
             multiplier,
-            payout: { participation },
+            payout: { participation, isCapReached },
             sharesInPercentage,
             hasConvertedToCommonShare
           } = shareholders[currentInvestorKey];
           // If an investor opted to convert to common stocks,
           // Do nothing and go to the next investor.
-          console.log("never??");
           if (hasConvertedToCommonShare) {
             console.log("ok!!!! convertedd", currentInvestorKey);
             shareholders[currentInvestorKey].payout = {
               participation,
               liquidationPreference: 0
             };
-            console.log("never?? ever");
 
             // if investor converted, remove from capped list (if they are capped)
             // this needs major refactor!
@@ -81,9 +58,8 @@ const App = () => {
             const isInvestorAlreadyCapped = cappedInvestors.find(
               i => i.title === shareholders[currentInvestorKey].title
             );
-            console.log("never??");
+
             if (isInvestorAlreadyCapped) {
-              console.log("never?? ever");
               setCappedInvestors(
                 cappedInvestors.filter(
                   i => i.title !== shareholders[currentInvestorKey].title
@@ -99,17 +75,13 @@ const App = () => {
               participation: 0,
               liquidationPreference: balance
             };
-            console.log("bingp!!!!", balance);
+
             balance = 0;
             setShareholders(shareholders);
           }
           const currentPayout = balance * sharesInPercentage;
           // console.log("NETX PAOUT ISSS ", sharesInPercentage, currentPayout);
           if (balance > sharesInPercentage * multiplier) {
-            // console.log(
-            //   "wtf is hapenning here??? ",
-            //   shortNumber(invested * multiplier)
-            // );
             shareholders[currentInvestorKey].payout = {
               participation,
               liquidationPreference: invested * multiplier
@@ -137,14 +109,21 @@ const App = () => {
          */
         Object.keys(shareholders).reduce((balance, currentInvestorKey) => {
           const {
-            payout: { participation, liquidationPreference },
+            payout: { participation, liquidationPreference, isCapReached },
             sharesInPercentage,
             invested,
             cap,
             hasConvertedToCommonShare,
-            multiplier
+            multiplier,
+            title
           } = shareholders[currentInvestorKey];
 
+          // const isInvestorAlreadyCapped = cappedInvestors.find(
+          //   i => i.title === title
+          // );
+          // if (isInvestorAlreadyCapped) {
+          //   setCappedInvestors(cappedInvestors.filter(i => i.title == title));
+          // }
           if (hasConvertedToCommonShare) {
             return balance;
           }
@@ -293,28 +272,11 @@ const App = () => {
           </ResetData>
         </ContentCenter>
         <ContentCenter>
-          <Summary>
-            <div>
-              <h3>Exit value</h3> <big>${shortNumber(exitValue)}</big>
-            </div>
-            <div>
-              <h4>Preffered Stocks:</h4>
-              <strong>${shortNumber(exitValue - commonStockSum)}</strong>
-              <SmallText>Stocks in cash:</SmallText>
-            </div>
-            <div>
-              <h4>Common stock:</h4>
-              <strong>${shortNumber(commonStockSum)}</strong>
-              <SmallText>Stocks in cash:</SmallText>
-            </div>
-            <div>
-              <h4>Uncapped stock:</h4>
-              <strong>
-                ${shortNumber(commonStockSum - cappedParticipation)}
-              </strong>
-              <SmallText>Stocks in cash:</SmallText>
-            </div>
-          </Summary>
+          <Summary
+            exitValue={exitValue}
+            commonStockSum={commonStockSum}
+            cappedParticipation={cappedParticipation}
+          />
         </ContentCenter>
         <Row>
           <ContentCenter>
@@ -326,7 +288,9 @@ const App = () => {
                 setToggle,
                 shareholders,
                 setShareholders,
-                ...shareholders[key]
+                ...shareholders[key],
+                setCappedInvestors,
+                cappedInvestors
               };
               return <Tile key={uuid()} currentStakeholder={key} {...props} />;
             })}

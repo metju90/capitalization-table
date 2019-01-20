@@ -14,7 +14,8 @@ import {
   ConvertButton,
   GreyOverlay
 } from "./skin";
-import { SmallText, Input } from "../../skin";
+import { SmallText } from "../Summery/skin";
+import ToolTip from "../Summery/tooltip";
 
 const Tile = ({
   title,
@@ -30,13 +31,16 @@ const Tile = ({
   toggle,
   setToggle,
   hasConvertedToCommonShare,
-  participationPercentage
+  participationPercentage,
+  setCappedInvestors,
+  cappedInvestors
 }) => {
   const isFounder = title === "Founders";
   return (
     <ShareHolder>
       <Title>{title}</Title>
       <DataRow>
+        <ToolTip message="Shares held by the shareholder" />
         <span>Shares:</span>
         <Data textAlign="right">
           <SmallText>({sharesInPercentage}%)</SmallText>
@@ -44,10 +48,12 @@ const Tile = ({
         </Data>
       </DataRow>
       <DataRow>
+        <ToolTip message="Investment made" />
         <span>Investment:</span> <Data>${shortNumber(invested)}</Data>
       </DataRow>
       {!isFounder && (
         <DataRow>
+          <ToolTip message="Liquidation preferred - the Preferred stock" />
           <span style={{ paddingRight: "5px" }}>Liquidation Preference:</span>
           <Data
             color={
@@ -61,6 +67,7 @@ const Tile = ({
         </DataRow>
       )}
       <DataRow>
+        <ToolTip message="Money the investor will take from the common or uncapped stocks. (% is referred to the uncapped)" />
         <span>Participation:</span>
         <Data textAlign="right">
           {!isCapReached && <SmallText>({participationPercentage}%)</SmallText>}
@@ -131,11 +138,7 @@ const Tile = ({
                   </div>
                 </SmallText>
                 <ConvertButton
-                  title={
-                    hasConvertedToCommonShare
-                      ? "Convert back to preferred stocks"
-                      : " Convert to common stocks"
-                  }
+                  title={"Convert back to preferred stocks"}
                   hasConverted={hasConvertedToCommonShare}
                   onClick={() => {
                     shareholders[
@@ -148,7 +151,7 @@ const Tile = ({
                     setToggle(!toggle);
                   }}
                 >
-                  {hasConvertedToCommonShare ? "Switch back" : "Convert Now!"}
+                  Switch back
                 </ConvertButton>
               </Fragment>
             )}
