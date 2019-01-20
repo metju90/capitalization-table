@@ -10,7 +10,7 @@ import {
 } from "./skin";
 import { cloneDeep } from "lodash";
 import {
-  toShortDollar,
+  shortNumber,
   getShareholdersDefaultData,
   calculateSharesinPercentage,
   sharesInPercentage
@@ -20,7 +20,7 @@ import uuid from "uuid";
 import Footer from "./components/Footer";
 
 const oneMillion = 1000000;
-const twentyFiveMillion = 25000000;
+const twentyFiveMillion = 35000000;
 const defaultShareHoldersData = getShareholdersDefaultData();
 const wait = ms => {
   var start = Date.now(),
@@ -73,13 +73,6 @@ const App = () => {
             return balance;
           }
 
-          // If no more money left from the exit sum
-          if (balance === 0) {
-            shareholders[currentInvestorKey].payout = {
-              liquidationPreference: 0,
-              participation
-            };
-          }
           // if there is less balance than investment
           if (balance <= invested * multiplier) {
             shareholders[currentInvestorKey].payout = {
@@ -93,13 +86,11 @@ const App = () => {
           if (balance > sharesInPercentage * multiplier) {
             // console.log(
             //   "wtf is hapenning here??? ",
-            //   toShortDollar(invested * multiplier)
+            //   shortNumber(invested * multiplier)
             // );
             shareholders[currentInvestorKey].payout = {
               participation,
-              liquidationPreference:
-                shareholders[currentInvestorKey].invested *
-                shareholders[currentInvestorKey].multiplier
+              liquidationPreference: invested * multiplier
             };
             balance = balance - invested * multiplier;
           }
@@ -128,7 +119,6 @@ const App = () => {
             sharesInPercentage,
             invested,
             cap,
-            isParticipating,
             hasConvertedToCommonShare,
             multiplier
           } = shareholders[currentInvestorKey];
@@ -137,9 +127,14 @@ const App = () => {
             return balance;
           }
           const doesExceedCap =
-            (liquidationPreference + balance) * (sharesInPercentage / 100) >
-            invested * (cap - 1);
-          console.log("current capped investors>???? ", doesExceedCap, balance);
+            balance * (sharesInPercentage / 100) > invested * (cap - 1);
+          console.log(
+            "current capped investors>???? ",
+            doesExceedCap,
+            shareholders[currentInvestorKey].title,
+            balance
+          );
+          console.log(sharesInPercentage / 100, invested * (cap - 1), balance);
 
           if (doesExceedCap) {
             shareholders[currentInvestorKey].payout = {
@@ -147,7 +142,7 @@ const App = () => {
               // cap - 1 because liquidation preference is considered as x1.
               // Therefore adding I am reducing the preferrenced stock from
               // the cap.
-              participation: isParticipating ? invested * (cap - 1) : 0,
+              participation: invested * (cap - 1),
               isCapReached: true
             };
             // cappedInvestors.push(shareholders[currentInvestorKey]);
@@ -164,18 +159,17 @@ const App = () => {
             }
             calculateSharesinPercentage(shareholders);
           }
-          console.log("aaaa!!!", toShortDollar(balance));
+          console.log("aaaa!!!", shortNumber(balance));
 
-          if (
-            doesExceedCap ||
-            (!isParticipating && !hasConvertedToCommonShare)
-          ) {
-            investorsWhichExceedsCap.push(currentInvestorKey);
+          if (doesExceedCap || hasConvertedToCommonShare) {
+            investorsWhichExceedsCap.push(
+              shareholders[currentInvestorKey].title
+            );
           }
 
-          if (!isParticipating) {
-            return (balance = balance * (sharesInPercentage / 100));
-          }
+          // if (!isParticipating) {
+          //   return (balance = balance * (sharesInPercentage / 100));
+          // }
           return balance;
         }, commonStockSum);
 
@@ -189,15 +183,19 @@ const App = () => {
             sharesInPercentage,
             invested,
             cap,
-            isParticipating,
             hasConvertedToCommonShare
           } = shareholders[currentInvestorKey];
-          if (investorsWhichExceedsCap.includes(currentInvestorKey))
+          console.log("dafuq>? ", investorsWhichExceedsCap);
+          if (
+            investorsWhichExceedsCap.includes(
+              shareholders[currentInvestorKey].title
+            )
+          )
             return balance;
           // Check for any capped investors and change the shareholding
           if (investorsWhichExceedsCap.length && !hasConvertedToCommonShare) {
             investorsWhichExceedsCap.forEach(cappedInvestor => {
-              // console.log("looping through capped investors");
+              console.log("looping through capped investors");
               // shareholders[currentInvestorKey].sharesInPercentage +=
               //   shareholders[cappedInvestor].sharesInPercentage *
               //   (sharesInPercentage / 100);
@@ -205,23 +203,21 @@ const App = () => {
           }
           console.log(
             "hi ther!!!",
-            currentInvestorKey,
-            isParticipating,
+            shareholders[currentInvestorKey].title,
             shareholders[currentInvestorKey].sharesInPercentage
           );
           shareholders[currentInvestorKey].payout = {
             liquidationPreference,
-            participation: isParticipating
-              ? balance *
-                (shareholders[currentInvestorKey].sharesInPercentage / 100)
-              : 0
-          };
-          if (!isParticipating) {
-            balance =
+            participation:
               balance *
-              (shareholders[currentInvestorKey].sharesInPercentage / 100);
-            setShareholders(shareholders);
-          }
+              (shareholders[currentInvestorKey].sharesInPercentage / 100)
+          };
+          // if (!isParticipating) {
+          //   balance =
+          //     balance *
+          //     (shareholders[currentInvestorKey].sharesInPercentage / 100);
+          //   setShareholders(shareholders);
+          // }
           return balance;
         }, commonStockSum);
 
@@ -237,7 +233,6 @@ const App = () => {
       <Container>
         <ContentCenter alignItem="center">
           <Input
-            isExitInput
             value={exitValue}
             step={1000000}
             type="number"
@@ -249,7 +244,6 @@ const App = () => {
               setShareholders(cloneDeep(defaultShareHoldersData));
               setCappedInvestors([]);
               setExitValue(twentyFiveMillion);
-              setToggle(!toggle);
             }}
           >
             Reset
@@ -258,16 +252,16 @@ const App = () => {
         <ContentCenter>
           <Summary>
             <div>
-              <h3>Exit value</h3> <big>{toShortDollar(exitValue)}</big>
+              <h3>Exit value</h3> <big>${shortNumber(exitValue)}</big>
             </div>
             <div>
               <h3>Preffered Stocks:</h3>
-              <strong>{toShortDollar(exitValue - commonStockSum)}</strong>
+              <strong>${shortNumber(exitValue - commonStockSum)}</strong>
               <SmallText>Stocks in cash:</SmallText>
             </div>
             <div>
               <h3>Common stock:</h3>
-              <strong>{toShortDollar(commonStockSum)}</strong>
+              <strong>${shortNumber(commonStockSum)}</strong>
               <SmallText>Stocks in cash:</SmallText>
             </div>
           </Summary>

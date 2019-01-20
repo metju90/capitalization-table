@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { toShortDollar } from "../../utils";
+import { shortNumber } from "../../utils";
 import {
   ShareHolder,
   AddButton,
@@ -19,11 +19,11 @@ import { SmallText, Input } from "../../skin";
 const Tile = ({
   title,
   sharesInPercentage,
+  shares,
   payout: { liquidationPreference, participation, isCapReached },
   invested,
   cap,
   multiplier,
-  isParticipating,
   shareholders,
   setShareholders,
   currentStakeholder,
@@ -31,18 +31,22 @@ const Tile = ({
   setToggle,
   hasConvertedToCommonShare
 }) => {
-  const isFounders = title === "Founders";
+  const isFounder = title === "Founders";
   return (
     <ShareHolder>
       <Title>{title}</Title>
       <DataRow>
-        <span>Shareholding:</span> <Data>{sharesInPercentage}%</Data>
+        <span>Shares:</span>
+        <Data>
+          <SmallText inLine>({sharesInPercentage}%)</SmallText>
+          {shortNumber(shares)}
+        </Data>
       </DataRow>
 
       <DataRow>
-        <span>Investment:</span> <Data>{toShortDollar(invested)}</Data>
+        <span>Investment:</span> <Data>${shortNumber(invested)}</Data>
       </DataRow>
-      {!isFounders && (
+      {!isFounder && (
         <DataRow>
           <span style={{ paddingRight: "5px" }}>Liquidation Preference:</span>
           <Data
@@ -52,15 +56,15 @@ const Tile = ({
                 : "success"
             }
           >
-            {toShortDollar(liquidationPreference)}
+            ${shortNumber(liquidationPreference)}
           </Data>
         </DataRow>
       )}
       <DataRow>
         <span>Participation:</span>
-        <Data>{toShortDollar(participation)}</Data>
+        <Data>${shortNumber(participation)}</Data>
       </DataRow>
-      {!isFounders && (
+      {!isFounder && (
         <VariablesWrapper>
           {hasConvertedToCommonShare && <GreyOverlay />}
           <Variable>
@@ -114,7 +118,7 @@ const Tile = ({
             </UserInteractionWrapper>
           </Variable>
           <div>
-            <SmallText minHeight="52px">
+            <SmallText isCappMessaged>
               {!hasConvertedToCommonShare && isCapReached && (
                 <Fragment>
                   <strong>Capped limited Reached.</strong>

@@ -34,7 +34,7 @@ export const ShareHolder = styled.div`
   width: 210px;
   position: relative;
   ${({ theme }) => theme.elements.boxShadow()}
-  background: #fff;
+  background: ${({ theme }) => theme.colorSet.whitest};  
 `;
 
 export const VariablesWrapper = styled.div`
@@ -65,12 +65,16 @@ export const Data = styled.strong`
 
 export const Title = styled.h2`
   text-align: center;
+  margin-top: 0;
 `;
 
 export const UserInputNumber = styled.span`
   width: 7px;
   display: inline-flex;
   justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+  align-items: center;
 `;
 
 export const UserInteractionWrapper = styled.div`
@@ -80,7 +84,7 @@ export const UserInteractionWrapper = styled.div`
 export const ConvertButton = styled.div`
   background: ${({ theme, hasConverted }) =>
     hasConverted ? theme.colorSet.warning : theme.colorSet.success};
-  color: #fff;
+  color: ${({ theme }) => theme.colorSet.whitest};
   border-radius: 0.25rem;
   cursor: pointer;
   text-transform: uppercase;
@@ -102,7 +106,7 @@ export const GreyOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 70px;
-  background: #fff;
+  background: ${({ theme }) => theme.colorSet.whitest};
   z-index: 1;
   opacity: ${({ isVisible }) => (isVisible ? 0 : 1)};
   transition: opacity 0.3s;

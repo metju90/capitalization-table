@@ -1,9 +1,5 @@
-import { toShortDollar } from "./formatNumbers";
+import { shortNumber } from "./formatNumbers";
 import calculateSharesinPercentage from "./sharesInPercentage";
 import { getShareholdersDefaultData } from "./shareholders";
 
-export {
-  toShortDollar,
-  calculateSharesinPercentage,
-  getShareholdersDefaultData
-};
+export { shortNumber, calculateSharesinPercentage, getShareholdersDefaultData };

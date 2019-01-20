@@ -9,20 +9,25 @@ export const SmallText = styled.span`
   color: ${({ theme }) => theme.colorSet.secondary};
   font-size: 11px;
   font-weight: 200;
-  display: block;
-  min-height: ${({ minHeight }) => (minHeight ? minHeight : "inherit")};
-  ${({ minHeight }) => minHeight && "margin: 15px 0"};
+  display: ${({ inLine }) => (inLine ? "inline-block" : "block")};
+  min-height: ${({ isCappMessaged }) => (isCappMessaged ? "52px" : "inherit")};
+  ${({ isCappMessaged }) => isCappMessaged && "margin: 15px 0"};
+  ${({ inLine }) => inLine && "margin-right: 5px"};
 `;
 
 export const ResetData = styled.a`
   cursor: pointer;
   margin-left: 10px;
-  background: ${({ theme }) => theme.colorSet.grey};
+  background: #ddd;
   color: ${({ theme }) => theme.colorSet.darker};
   padding: 5px;
   font-weight: 300;
   border-radius: 0.25rem;
   ${({ theme }) => theme.affects.buttonClick()};
+
+  &:hover {
+    background: ${({ theme }) => theme.colorSet.grey};
+  }
 `;
 
 export const Input = styled.input`
@@ -46,8 +51,8 @@ export const Input = styled.input`
 
 export const Summary = styled.div`
   font-weight: normal;
-  background: #fff;
-  padding: 10px;
+  background: ${({ theme }) => theme.colorSet.whitest};
+  padding: 5px 15px;
   min-width: 310px;
   ${({ theme }) => theme.elements.boxShadow()}
   big {

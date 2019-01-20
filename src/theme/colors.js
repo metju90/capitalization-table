@@ -5,9 +5,9 @@ export default {
     black: "#000",
     grey: "#ced0d6",
     white: "#eee",
+    whitest: "#fff",
     primary: "#007bff",
     secondary: "#6c757d",
-    red: "#ed231d",
     success: "#28a745",
     danger: "#dc3545",
     warning: "#ffc107"

@@ -7,12 +7,12 @@
  *
  * @returns {String} Short number with dollar sign
  */
-const toShortDollar = number => {
+const shortNumber = number => {
   number = parseFloat(Number(number)).toFixed(2);
-  // Nine Zeroes for Billions
   number =
     Math.abs(Number(number)) >= 1.0e9
-      ? Number(Math.abs(Number(number)) / 1.0e9).toFixed(2) + "B"
+      ? // Nine Zeroes for Billions
+        Number(Math.abs(Number(number)) / 1.0e9).toFixed(2) + "B"
       : // Six Zeroes for Millions
       Math.abs(Number(number)) >= 1.0e6
       ? Number(Math.abs(Number(number)) / 1.0e6).toFixed(2) + "M"
@@ -20,10 +20,7 @@ const toShortDollar = number => {
       Math.abs(Number(number)) >= 1.0e3
       ? Number(Math.abs(Number(number)) / 1.0e3).toFixed(2) + "K"
       : Math.abs(Number(number));
-
-  //   const lastChar = number.toString().charAt(number.length - 1);
-
-  return `$${number}`;
+  return `${number}`;
 };
 
-export { toShortDollar };
+export { shortNumber };

@@ -22,9 +22,7 @@ export default () => css`
   #root {
     position: relative;
   }
-  .fixed {
-    top: 90px;
-  }
+
   * {
     box-sizing: border-box;
   }
