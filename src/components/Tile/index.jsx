@@ -12,7 +12,7 @@ import {
   UserInputNumber,
   UserInteractionWrapper,
   ConvertButton,
-  GreyOverlay
+  OverLayer
 } from "./skin";
 import { SmallText } from "../Summery/skin";
 import ToolTip from "../Summery/tooltip";
@@ -76,7 +76,7 @@ const Tile = ({
       </DataRow>
       {!isFounder && (
         <VariablesWrapper>
-          {hasConvertedToCommonShare && <GreyOverlay />}
+          {hasConvertedToCommonShare && <OverLayer />}
           <Variable>
             <span>Cap:</span>
             <UserInteractionWrapper>
@@ -128,7 +128,7 @@ const Tile = ({
             </UserInteractionWrapper>
           </Variable>
           <div>
-            {!hasConvertedToCommonShare && isCapReached && (
+            {(isCapReached || hasConvertedToCommonShare) && (
               <Fragment>
                 <SmallText isCappMessaged>
                   <strong>Capped limited Reached.</strong>
@@ -138,7 +138,6 @@ const Tile = ({
                   </div>
                 </SmallText>
                 <ConvertButton
-                  title={"Convert back to preferred stocks"}
                   hasConverted={hasConvertedToCommonShare}
                   onClick={() => {
                     shareholders[
@@ -151,7 +150,7 @@ const Tile = ({
                     setToggle(!toggle);
                   }}
                 >
-                  Switch back
+                  {hasConvertedToCommonShare ? "Switch back!" : "Convert now!"}
                 </ConvertButton>
               </Fragment>
             )}

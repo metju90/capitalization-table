@@ -16,7 +16,7 @@ It was a great deja vu feeling!
 
 :warning: Warning! :warning:
 
-Wet nasty and not-so-nice code can be seen in one particular file.
+Wet, nasty and not-so-nice code can be seen in one particular file.
 
 I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead, I focus only on getting to logic working right. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
 
@@ -24,7 +24,7 @@ I thought that when I will have a working calculator, it should not be as challe
 
 Excluding `App.js` all source code is of a good standard. But if I had to judge my own code, I would raise eyebrows when seeing the mentioned file.
 
-If you would like to see neat solution, check out the following:
+If you would like to see neat solutions, check out the following:
 
 [Ginetta's Challenge - frontend only](https://github.com/metju90/search-github-users)
 
@@ -38,13 +38,14 @@ If you would like to see neat solution, check out the following:
   The latest group of investors have precedent over others for preferred shares.
 
 - **Dynamic settings**\
+  Limited settings can be changed dynamically.
   Edit on the go and see instant results (hopefully good ones :) )
 
 - **Multiplier**\
   From the brief and basic research which I did, and I hope I got this right, an investors can have a multiplier which would multiply his preferred shares. By default, this is set to 1.
 
 - **Conversion option**\
-  Initially, I added conversion option for the investors which reaches the cap. But then was I was reading your examples again, at \$60m Investor C does not reach the x1 cap
+  When you reach the cap, you have the option to convert the investor's preferred shares to common. If you take the option and then changes your mind, dont worry, you are one click away to revert back.
 
 ## Domain knowledge
 

@@ -105,12 +105,12 @@ export const ConvertButton = styled.div`
   ${({ theme }) => theme.affects.buttonHover()}
 `;
 
-export const GreyOverlay = styled.div`
+export const OverLayer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 64px;
+  height: 95px;
   background: ${({ theme }) => theme.colorSet.whitest};
   z-index: 1;
   opacity: ${({ isVisible }) => (isVisible ? 0 : 1)};
