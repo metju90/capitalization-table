@@ -32,10 +32,10 @@ If you would like to see neat solution, check out the following:
 
 ## Features
 
-- **Seniority Structure: Standard**
+- **Seniority Structure: Standard**\
   The latest group of investors have precedent over others for preferred shares.
 
-- **Dynamic settings**
+- **Dynamic settings**\
   Edit on the go and see instant results (hopefully good ones :) )
 
 - **Multiplier**
