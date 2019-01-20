@@ -2,11 +2,18 @@
 
 [Demo link here](http://ledgy.matthewbarbara.com)
 
-To test the application in the most
+You can add URL parameter `?exit=n`.
+Examples:
+
+http://ledgy.matthewbarbara.com?exit=60000000
+
+http://ledgy.matthewbarbara.com?exit=45000000
+
+http://ledgy.matthewbarbara.com?exit=35000000
 
 ## Small note.
 
-When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days.
+When I met your team I had good resemblances of the previous start up I worked for. On Thursday evening, when I was asked to do the challenge, I challenged myself to build a working calculator by Friday morning. Just like the good old days with my previous employer.
 
 By the early hours of Friday morning I had a working calculator with no capping and conversions :trophy:
 
