@@ -23,7 +23,7 @@ It was a great deja vu feeling!
 
 :warning: Warning! :warning:
 
-Wet, nasty and not-so-nice code can be seen in one particular file.
+Wet, nasty and not-so-nice code is guaranteed to be seen in one particular file.
 
 I am a fond of neat, polished and well structured code and I usually put great effort into that. But given the difficulty of this challenge, the **mistake which I did**, was to literally not care about the quality of code and instead, I focus only on getting to logic working right. I explained the wrong decisions I made [in this section](#technical-problems-which-i-encountered)
 
