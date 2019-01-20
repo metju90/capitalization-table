@@ -66,7 +66,8 @@ export const Summary = styled.div`
     flex-wrap: wrap;
   }
 
-  h3 {
+  h3,
+  h4 {
     margin: 0;
   }
 

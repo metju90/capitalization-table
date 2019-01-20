@@ -66,12 +66,14 @@ const App = () => {
           } = shareholders[currentInvestorKey];
           // If an investor opted to convert to common stocks,
           // Do nothing and go to the next investor.
+          console.log("never??");
           if (hasConvertedToCommonShare) {
             console.log("ok!!!! convertedd", currentInvestorKey);
             shareholders[currentInvestorKey].payout = {
               participation,
               liquidationPreference: 0
             };
+            console.log("never?? ever");
 
             // if investor converted, remove from capped list (if they are capped)
             // this needs major refactor!
@@ -79,7 +81,9 @@ const App = () => {
             const isInvestorAlreadyCapped = cappedInvestors.find(
               i => i.title === shareholders[currentInvestorKey].title
             );
+            console.log("never??");
             if (isInvestorAlreadyCapped) {
+              console.log("never?? ever");
               setCappedInvestors(
                 cappedInvestors.filter(
                   i => i.title !== shareholders[currentInvestorKey].title
@@ -259,6 +263,14 @@ const App = () => {
     [exitValue, toggle, commonStockSum, cappedInvestors]
   );
   console.log("isInvestorAlreadyCapped ??? ", cappedInvestors);
+  const cappedParticipation = cappedInvestors.reduce((accumlator, i) => {
+    return accumlator + i.payout.participation;
+  }, 0);
+  console.log(
+    "da zobb ta capped investor",
+    cappedInvestors,
+    cappedParticipation
+  );
   return (
     <Fragment>
       <Container>
@@ -286,13 +298,20 @@ const App = () => {
               <h3>Exit value</h3> <big>${shortNumber(exitValue)}</big>
             </div>
             <div>
-              <h3>Preffered Stocks:</h3>
+              <h4>Preffered Stocks:</h4>
               <strong>${shortNumber(exitValue - commonStockSum)}</strong>
               <SmallText>Stocks in cash:</SmallText>
             </div>
             <div>
-              <h3>Common stock:</h3>
+              <h4>Common stock:</h4>
               <strong>${shortNumber(commonStockSum)}</strong>
+              <SmallText>Stocks in cash:</SmallText>
+            </div>
+            <div>
+              <h4>Uncapped stock:</h4>
+              <strong>
+                ${shortNumber(commonStockSum - cappedParticipation)}
+              </strong>
               <SmallText>Stocks in cash:</SmallText>
             </div>
           </Summary>
