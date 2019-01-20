@@ -54,6 +54,10 @@ If you would like to see neat solutions, check out the following:
 - **Conversion option**\
   When you reach the cap, you have the option to convert the investor's preferred shares to common. If you take the option and then changes your mind, dont worry, you are one click away to revert back.
 
+- **Tools tips**\
+  Added tool tips to help you understand my reasoning.
+  
+
 ## Domain knowledge
 
 I learned what Liquidation preference is on Thursday evening. To be honest with you, I even had to go through investopedia to clarify Liquidation =)
