@@ -21,15 +21,6 @@ It was a great deja vu feeling!
 
 ## Quality of code
 
-***UPDATE***
-
-==============
-
-I've started refactoring. There is still lots of work to do but its work in progress. I am doing the refactoring in a new branch.
-
-You can see the diff's here https://github.com/metju90/ledgy-challenge/compare/major-refactor?diff=split&expand=1
-
-==============
 
 :warning: Warning! :warning:
 
@@ -49,7 +40,18 @@ If you would like to see neat solutions, check out the following:
 
 [R3PI's Challenge - frontend only](https://github.com/metju90/R3PI)
 
-## Features
+
+***UPDATE***
+
+
+I've started refactoring. There is still lots of work to do but its work in progress. I am doing the refactoring in a new branch.
+
+You can see the diff's here https://github.com/metju90/ledgy-challenge/compare/major-refactor?diff=split&expand=1
+
+
+# Features
+
+## Non-technical
 
 - **Seniority Structure: Standard**\
   The latest group of investors have precedent over others for preferred shares.
@@ -67,6 +69,25 @@ If you would like to see neat solutions, check out the following:
 - **Tools tips**\
   Added tool tips to help you understand my reasoning.
   
+  
+## Technical
+
+- **CSS in JS**\
+  I structured the CSS in JS in a way which can scale on large projects.
+  
+- **React hooks**
+  Initially, whilst I used hooks, I focused on getting the job done and did not utilize them. I am doing major refactor which will make better use of hooks.
+
+- **CSS over JS, all the time, when possible**
+  One particular small detail but an important one. For the toolstips, I could have used JS (React hooks) to toggle on/off tooltips on hover. Instead, I opted for CSS for performance reasons. 
+
+- **Third party libraries**
+  I do appreciate the massive ecosystem of Javascript but I try to use in-built functionalities unless its very necessary to use third party libraries. The reason for this is usually libraries tend to be verbose and often introduces code in your system which you will never use.
+  
+ The only function I am using from Lodash is `deepClone`.
+ 
+ In terms of UI, if i am not mistaken, the only third party libraries I am using are Bootstrap's scaffolding (container, columns and rows) and one Fontawesome icon. The rest I've built myself.
+ 
 
 ## Domain knowledge
 
