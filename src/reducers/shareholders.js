@@ -21,9 +21,7 @@ export function reducer(state, action) {
       return {
         ...state,
         commonStockSum,
-        // Reverse back to the default order
-        shareholders: updatedShareholders,
-        exitValue
+        shareholders: updatedShareholders
       };
     }
     case "shareholders":
@@ -44,15 +42,13 @@ export function reducer(state, action) {
        */
       shareholders.reduce((balance, currentShareholder) => {
         const {
-          payout: { participation, liquidationPreference, isCapReached },
+          payout: { liquidationPreference },
           sharesInPercentage,
           invested,
           cap,
-          hasConvertedToCommonShare,
-          multiplier,
-          title
+          hasConvertedToCommonShare
         } = currentShareholder;
-
+        console.log("ok in here!!!");
         if (hasConvertedToCommonShare) {
           return balance;
         }
@@ -142,7 +138,8 @@ export function reducer(state, action) {
         currentShareholder.payout = {
           liquidationPreference,
           participation:
-            getCommonShareAfterCappers() * (uncappedParticipationPercentage / 100)
+            getCommonShareAfterCappers() *
+            (uncappedParticipationPercentage / 100)
         };
         console.log("but this is not the common stock?", commonStockSum);
         return balance;

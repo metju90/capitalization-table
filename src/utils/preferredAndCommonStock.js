@@ -6,7 +6,7 @@
  * @param {Object} shareholders - Shareholders data
  * @param {number} exitValue - The exit price
  *
- * @returns {Array} Array of two, the common stock and investors preferred stock
+ * @returns {Array} Array of two, the common stock and shareholders
  */
 
 export default (shareholders, exitValue) => {
@@ -31,7 +31,7 @@ export default (shareholders, exitValue) => {
       }
 
       // If investors converted to Common stock, exclude
-      // them from the preffered stock
+      // them from the preffered stock separa
       if (hasConvertedToCommonShare) {
         currentShareholder.payout = {
           participation,

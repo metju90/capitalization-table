@@ -1,6 +1,7 @@
 /**
  *
- * Function which calculates the percentage of both the shares and
+ * Function which calculates shareholders percentages - their shares and if
+ * applicable, the percentage they will take from the uncapped stock.
  *
  * @param {Object} shareholders - Static data of the share holders
  *
@@ -9,29 +10,38 @@
  *
  */
 export default shareholders => {
-  let totalShares = 0;
-  let uncappedShares = 0;
+  let investorsCombinedShares = 0;
+  let totalSharesOfUncappedInvestors = 0;
 
   return Object.keys(shareholders)
     .map(key => {
-      // To calculate to shares
-      totalShares += shareholders[key].shares;
+      investorsCombinedShares += shareholders[key].shares;
 
-      // omit the shares of capped investors
-      if (shareholders[key].payout.isCapReached) return shareholders[key];
-
-      uncappedShares += shareholders[key].shares;
+      if (shareholders[key].payout.isCapReached) {
+        return shareholders[key];
+      }
+      // Only if the investor is not capped.
+      totalSharesOfUncappedInvestors += shareholders[key].shares;
       return shareholders[key];
     })
     .map(s => {
-      s.sharesInPercentage =
-        Math.round(((100 * s.shares) / totalShares).toFixed(2) * 100) / 100;
+      s.sharesInPercentage = calculatePercentage(
+        s.shares,
+        investorsCombinedShares
+      );
 
       if (!s.payout.isCapReached) {
-        s.uncappedParticipationPercentage =
-          Math.round(((100 * s.shares) / uncappedShares).toFixed(2) * 100) /
-          100;
+        s.uncappedParticipationPercentage = calculatePercentage(
+          s.shares,
+          totalSharesOfUncappedInvestors
+        );
       }
       return s;
     });
 };
+
+// this function assumes that the partial value is below than 1.
+// i.e. 0.5, 0.33 or 0.067
+const calculatePercentage = (partialValue, totalValue) =>
+  // This is a workout to deal with Javascript's issue with float numbers
+  Math.round(((100 * partialValue) / totalValue).toFixed(2) * 100) / 100;

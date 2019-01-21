@@ -16,6 +16,7 @@ import {
 } from "./skin";
 import { SmallText } from "../Summery/skin";
 import ToolTip from "../Summery/tooltip";
+import Convert from "./Convert";
 
 const Tile = ({
   currentShareHolder,
@@ -136,33 +137,12 @@ const Tile = ({
               </AddButton>
             </UserInteractionWrapper>
           </Variable>
-          <div>
-            {(isCapReached || hasConvertedToCommonShare) && (
-              <Fragment>
-                <SmallText isCappMessaged>
-                  <strong>Capped limited Reached.</strong>
-                  <div>
-                    You can either retain your preferred stock or convert them
-                    to common.
-                  </div>
-                </SmallText>
-                <ConvertButton
-                  hasConverted={hasConvertedToCommonShare}
-                  onClick={() => {
-                    currentShareHolder.hasConvertedToCommonShare = !hasConvertedToCommonShare;
-                    currentShareHolder.payout.isCapReached = !hasConvertedToCommonShare;
-                    dispatch({
-                      type: "shareholders",
-                      payload: currentShareHolder
-                    });
-                    // setCallPrefferedStock(!callPrefferedStock);
-                  }}
-                >
-                  {hasConvertedToCommonShare ? "Switch back!" : "Convert now!"}
-                </ConvertButton>
-              </Fragment>
-            )}
-          </div>
+          {(isCapReached || hasConvertedToCommonShare) && (
+            <Convert
+              hasConvertedToCommonShare={hasConvertedToCommonShare}
+              isCapReached={isCapReached}
+            />
+          )}
         </VariablesWrapper>
       )}
     </ShareHolder>
