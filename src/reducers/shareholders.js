@@ -42,11 +42,13 @@ export function reducer(state, action) {
        */
       shareholders.reduce((balance, currentShareholder) => {
         const {
-          payout: { liquidationPreference },
+          payout: {  liquidationPreference, isCapReached },
           sharesInPercentage,
           invested,
           cap,
-          hasConvertedToCommonShare
+          hasConvertedToCommonShare,
+          multiplier,
+          title
         } = currentShareholder;
         console.log("ok in here!!!");
         if (hasConvertedToCommonShare) {

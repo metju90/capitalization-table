@@ -1,12 +1,12 @@
 /**
  *
- * Function which takes a any number. Depending how long is the given
- * number, different process is applied
+ * Function which takes a number and converts it to a short string
  *
- * @param {number} number - a number
+ * @param {number} number
  *
- * @returns {String} Short number with dollar sign
+ * @returns {String} Short number
  */
+
 const shortNumber = number => {
   number = parseFloat(Number(number)).toFixed(2);
   number =

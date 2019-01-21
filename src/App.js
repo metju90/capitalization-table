@@ -1,28 +1,20 @@
 import React, { useState, useEffect, useReducer, Fragment } from "react";
 import { Row } from "styled-bootstrap-grid";
 import uuid from "uuid";
-import { cloneDeep } from "lodash";
-import { getShareholdersDefaultData } from "./utils";
 import { ResetData, Input, ContentCenter, Container } from "./skin";
 import Tile from "./components/Tile";
 import Footer from "./components/Footer";
 import Summary from "./components/Summery";
 import { shareholdersReducer } from "./reducers";
-
-const defaultExit =
-  new URL(window.location.href).searchParams.get("exit") || 25000000;
-const defaultShareHoldersData = getShareholdersDefaultData();
-
-const initalState = {
-  exitValue: defaultExit,
-  cappedInvestors: [],
-  commonStockSum: 0,
-  shareholders: cloneDeep(defaultShareHoldersData)
-};
+import {
+  defaultShareHoldersData,
+  initialState,
+  defaultExitValue
+} from "./constants";
 
 const App = () => {
-  const [state, dispatch] = useReducer(shareholdersReducer, initalState);
-  const [callPrefferedStock, setCallPrefferedStock] = useState(false);
+  const [state, dispatch] = useReducer(shareholdersReducer, initialState);
+  const [callPreferredStock, setCallPreferredStock] = useState(false);
   const [callThree, setCallThree] = useState(false);
   const { exitValue, cappedInvestors, commonStockSum, shareholders } = state;
   console.log(">>> RETURN FROM DISPATCH ", { ...state });
@@ -64,7 +56,7 @@ const App = () => {
             onClick={() => {
               dispatch({
                 type: "shareholders",
-                payload: cloneDeep(defaultShareHoldersData)
+                payload: defaultShareHoldersData
               });
               dispatch({
                 type: "cappedInvestors",
@@ -72,7 +64,7 @@ const App = () => {
               });
               dispatch({
                 type: "exitValue",
-                payload: defaultExit
+                payload: defaultExitValue
               });
             }}
           >
@@ -96,8 +88,8 @@ const App = () => {
                 currentShareHolder: s,
                 cappedInvestors,
                 dispatch,
-                callPrefferedStock,
-                setCallPrefferedStock
+                callPreferredStock,
+                setCallPreferredStock
               };
               return <Tile key={uuid()} {...props} />;
             })}

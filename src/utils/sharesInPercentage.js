@@ -40,8 +40,8 @@ export default shareholders => {
     });
 };
 
-// this function assumes that the partial value is below than 1.
+// this function assumes that the partial value is smaller than 1.
 // i.e. 0.5, 0.33 or 0.067
 const calculatePercentage = (partialValue, totalValue) =>
-  // This is a workout to deal with Javascript's issue with float numbers
+  // This is a workout to deal with Javascript's issues with float numbers
   Math.round(((100 * partialValue) / totalValue).toFixed(2) * 100) / 100;
