@@ -75,13 +75,13 @@ You can see the diff's here https://github.com/metju90/ledgy-challenge/compare/m
 - **CSS in JS**\
   I structured the CSS in JS in a way which can scale on large projects.
   
-- **React hooks**
+- **React hooks**\
   Initially, whilst I used hooks, I focused on getting the job done and did not utilize them. I am doing major refactor which will make better use of hooks.
 
-- **CSS over JS, all the time, when possible**
+- **CSS over JS, all the time, when possible**\
   One particular small detail but an important one. For the toolstips, I could have used JS (React hooks) to toggle on/off tooltips on hover. Instead, I opted for CSS for performance reasons. 
 
-- **Third party libraries**
+- **Third party libraries**\
   I do appreciate the massive ecosystem of Javascript but I try to use in-built functionalities unless its very necessary to use third party libraries. The reason for this is usually libraries tend to be verbose and often introduces code in your system which you will never use. The only function I am using from Lodash is `deepClone`. In terms of UI, the only third party libraries I am using are Bootstrap's scaffolding (container, columns and rows) and one Fontawesome icon. The rest were built by myself.
  
 
