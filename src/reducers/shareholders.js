@@ -1,4 +1,4 @@
-import { calculateSharesinPercentage } from "../utils";
+import { calculateSharesinPercentage, preferredAndCommonStock } from "../utils";
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -13,75 +13,16 @@ export function reducer(state, action) {
     }
     case "preferredStock": {
       const { shareholders, cappedInvestors, exitValue } = action.payload;
-      console.log("the state is?? ", state);
-      const newCappedInvestors = [];
-      let x = 0;
-
-      shareholders
-        // .reverse() // To start from the latest investors
-        .reduce((balance, currentShareholder) => {
-          const {
-            invested,
-            multiplier,
-            payout: { participation, isCapReached },
-            sharesInPercentage,
-            hasConvertedToCommonShare
-          } = currentShareholder;
-          if (hasConvertedToCommonShare) {
-            console.log("ok!!!! convertedd", currentShareholder);
-            currentShareholder.payout = {
-              participation,
-              liquidationPreference: 0
-            };
-
-            // if investor converted, remove from capped list (if they are capped)
-            // this needs major refactor!
-
-            const isInvestorAlreadyCapped = cappedInvestors.find(
-              i => i.title === currentShareholder.title
-            );
-
-            if (isInvestorAlreadyCapped) {
-              newCappedInvestors.push(currentShareholder);
-            }
-            return balance;
-          }
-
-          // if there is less balance than investment
-          if (balance <= invested * multiplier) {
-            currentShareholder.payout = {
-              participation: 0,
-              liquidationPreference: balance
-            };
-
-            balance = 0;
-            // setShareholders(shareholders);
-          }
-          const currentPayout = balance * sharesInPercentage;
-          // console.log("NETX PAOUT ISSS ", sharesInPercentage, currentPayout);
-          if (balance > sharesInPercentage * multiplier) {
-            currentShareholder.payout = {
-              participation,
-              liquidationPreference: invested * multiplier
-            };
-            balance = balance - invested * multiplier;
-          }
-          // setCommonStockSum(balance);
-          x = balance;
-          return balance;
-        }, exitValue);
-      console.log("before turn ", x, {
-        ...state,
-        commonStockSum: x,
+      const [updatedShareholders, commonStockSum] = preferredAndCommonStock(
         shareholders,
-        cappedInvestors: newCappedInvestors,
         exitValue
-      });
+      );
+
       return {
         ...state,
-        commonStockSum: x,
-        shareholders,
-        cappedInvestors: newCappedInvestors,
+        commonStockSum,
+        // Reverse back to the default order
+        shareholders: updatedShareholders,
         exitValue
       };
     }
@@ -160,7 +101,7 @@ export function reducer(state, action) {
           invested,
           cap,
           hasConvertedToCommonShare,
-          participationPercentage
+          uncappedParticipationPercentage
         } = currentShareholder;
         // console.log("dafuq>? ", investorsWhichExceedsCap);
         if (investorsWhichExceedsCap.includes(currentShareholder.title)) {
@@ -201,7 +142,7 @@ export function reducer(state, action) {
         currentShareholder.payout = {
           liquidationPreference,
           participation:
-            getCommonShareAfterCappers() * (participationPercentage / 100)
+            getCommonShareAfterCappers() * (uncappedParticipationPercentage / 100)
         };
         console.log("but this is not the common stock?", commonStockSum);
         return balance;

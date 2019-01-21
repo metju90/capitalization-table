@@ -32,7 +32,7 @@ const Tile = ({
     cap,
     multiplier,
     hasConvertedToCommonShare,
-    participationPercentage
+    uncappedParticipationPercentage
   } = currentShareHolder;
   const isFounder = title === "Founders";
   return (
@@ -70,7 +70,7 @@ const Tile = ({
         <span>Participation:</span>
         <Data textAlign="right">
           <SmallText>
-            ({isCapReached ? "Capped" : `${participationPercentage}%`})
+            ({isCapReached ? "Capped" : `${uncappedParticipationPercentage}%`})
           </SmallText>
           ${shortNumber(participation)}
         </Data>

@@ -1,7 +1,6 @@
 import React from "react";
 import { shortNumber } from "../../utils";
 import { Summary, ContentWrapper, SmallText, Header } from "./skin";
-import { FaInfoCircle } from "react-icons/fa";
 import ToolTip from "../Summery/tooltip";
 
 export default ({ exitValue, commonStockSum, cappedParticipation }) => (
@@ -16,7 +15,7 @@ export default ({ exitValue, commonStockSum, cappedParticipation }) => (
     <ContentWrapper>
       <ToolTip message={"The preferred stocks - the most prioritsed stocks/"} />
       <Header>
-        <h4>Preffered Stocks:</h4>
+        <h4>Preferred Stocks:</h4>
         <SmallText>Stocks in cash:</SmallText>
       </Header>
       <strong>${shortNumber(exitValue - commonStockSum)}</strong>
