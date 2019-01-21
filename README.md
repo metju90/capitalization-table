@@ -21,6 +21,16 @@ It was a great deja vu feeling!
 
 ## Quality of code
 
+***UPDATE***
+
+==============
+
+I've started refactoring. There is still lots of work to do but its work in progress. I am doing the refactoring in a new branch.
+
+You can see the diff's here https://github.com/metju90/ledgy-challenge/compare/major-refactor?diff=split&expand=1
+
+==============
+
 :warning: Warning! :warning:
 
 Wet, nasty and not-so-nice code is guaranteed to be seen in one particular file.
