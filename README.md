@@ -82,11 +82,7 @@ You can see the diff's here https://github.com/metju90/ledgy-challenge/compare/m
   One particular small detail but an important one. For the toolstips, I could have used JS (React hooks) to toggle on/off tooltips on hover. Instead, I opted for CSS for performance reasons. 
 
 - **Third party libraries**
-  I do appreciate the massive ecosystem of Javascript but I try to use in-built functionalities unless its very necessary to use third party libraries. The reason for this is usually libraries tend to be verbose and often introduces code in your system which you will never use.
-  
- The only function I am using from Lodash is `deepClone`.
- 
- In terms of UI, if i am not mistaken, the only third party libraries I am using are Bootstrap's scaffolding (container, columns and rows) and one Fontawesome icon. The rest I've built myself.
+  I do appreciate the massive ecosystem of Javascript but I try to use in-built functionalities unless its very necessary to use third party libraries. The reason for this is usually libraries tend to be verbose and often introduces code in your system which you will never use. The only function I am using from Lodash is `deepClone`. In terms of UI, the only third party libraries I am using are Bootstrap's scaffolding (container, columns and rows) and one Fontawesome icon. The rest were built by myself.
  
 
 ## Domain knowledge
