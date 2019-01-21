@@ -9,7 +9,7 @@
  * @returns {Array} Array of two, the common stock and shareholders
  */
 
-export default (shareholders, exitValue) => {
+export default ({ shareholders, exitValue }) => {
   let commonStockSum = 0;
 
   // Working on the preferred stock for investors.

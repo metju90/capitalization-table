@@ -15,21 +15,25 @@ import {
 const App = () => {
   const [state, dispatch] = useReducer(shareholdersReducer, initialState);
   const [callPreferredStock, setCallPreferredStock] = useState(false);
-  const [callThree, setCallThree] = useState(false);
   const { exitValue, cappedInvestors, commonStockSum, shareholders } = state;
   console.log(">>> RETURN FROM DISPATCH ", { ...state });
+
   useEffect(
     () => {
-      dispatch({ type: "preferredStock", payload: { ...state } });
-      // dispatch({ type: "theThree", payload: { ...state } });
+      dispatch({
+        type: "preferredStock",
+        payload: { shareholders, exitValue }
+      });
     },
     [exitValue]
   );
 
   useEffect(
     () => {
-      // console.log("second one... ", commonStockSum);
-      dispatch({ type: "theThree", payload: { ...state } });
+      dispatch({
+        type: "shareholders",
+        payload: { shareholders, cappedInvestors, commonStockSum }
+      });
     },
     [commonStockSum]
   );
@@ -45,7 +49,7 @@ const App = () => {
         <ContentCenter alignItem="center">
           <Input
             value={exitValue}
-            step={1000000}
+            step={1.0e6}
             type="number"
             onChange={e =>
               dispatch({ type: "exitValue", payload: e.target.value })
