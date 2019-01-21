@@ -18,23 +18,22 @@ import { SmallText } from "../Summery/skin";
 import ToolTip from "../Summery/tooltip";
 
 const Tile = ({
-  title,
-  sharesInPercentage,
-  shares,
-  payout: { liquidationPreference, participation, isCapReached },
-  invested,
-  cap,
-  multiplier,
-  shareholders,
-  setShareholders,
-  currentStakeholder,
-  toggle,
-  setToggle,
-  hasConvertedToCommonShare,
-  participationPercentage,
-  setCappedInvestors,
-  cappedInvestors
+  currentShareHolder,
+  dispatch,
+  setCallPrefferedStock,
+  callPrefferedStock
 }) => {
+  const {
+    title,
+    sharesInPercentage,
+    shares,
+    payout: { liquidationPreference, participation, isCapReached },
+    invested,
+    cap,
+    multiplier,
+    hasConvertedToCommonShare,
+    participationPercentage
+  } = currentShareHolder;
   const isFounder = title === "Founders";
   return (
     <ShareHolder>
@@ -70,7 +69,9 @@ const Tile = ({
         <ToolTip message="Money the investor will take from the common or uncapped stocks. (% is referred to the uncapped)" />
         <span>Participation:</span>
         <Data textAlign="right">
-          {!isCapReached && <SmallText>({participationPercentage}%)</SmallText>}
+          <SmallText>
+            ({isCapReached ? "Capped" : `${participationPercentage}%`})
+          </SmallText>
           ${shortNumber(participation)}
         </Data>
       </DataRow>
@@ -83,9 +84,11 @@ const Tile = ({
               <RemoveButton
                 isDisabled={cap < 3}
                 onClick={() => {
-                  shareholders[currentStakeholder].cap = cap - 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
+                  currentShareHolder.cap = cap - 1;
+                  dispatch({
+                    type: "shareholders",
+                    payload: currentShareHolder
+                  });
                 }}
               >
                 -
@@ -93,9 +96,11 @@ const Tile = ({
               <UserInputNumber>x{cap}</UserInputNumber>
               <AddButton
                 onClick={() => {
-                  shareholders[currentStakeholder].cap = cap + 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
+                  currentShareHolder.cap = cap + 1;
+                  dispatch({
+                    type: "shareholders",
+                    payload: currentShareHolder
+                  });
                 }}
               >
                 +
@@ -108,9 +113,11 @@ const Tile = ({
               <RemoveButton
                 isDisabled={multiplier < 2}
                 onClick={() => {
-                  shareholders[currentStakeholder].multiplier = multiplier - 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
+                  currentShareHolder.multiplier = multiplier - 1;
+                  dispatch({
+                    type: "shareholders",
+                    payload: currentShareHolder
+                  });
                 }}
               >
                 -
@@ -118,9 +125,11 @@ const Tile = ({
               <UserInputNumber>x{multiplier}</UserInputNumber>
               <AddButton
                 onClick={() => {
-                  shareholders[currentStakeholder].multiplier = multiplier + 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
+                  currentShareHolder.multiplier = multiplier + 1;
+                  dispatch({
+                    type: "shareholders",
+                    payload: currentShareHolder
+                  });
                 }}
               >
                 +
@@ -140,14 +149,13 @@ const Tile = ({
                 <ConvertButton
                   hasConverted={hasConvertedToCommonShare}
                   onClick={() => {
-                    shareholders[
-                      currentStakeholder
-                    ].hasConvertedToCommonShare = !hasConvertedToCommonShare;
-                    shareholders[
-                      currentStakeholder
-                    ].payout.isCapReached = !hasConvertedToCommonShare;
-                    setShareholders(shareholders);
-                    setToggle(!toggle);
+                    currentShareHolder.hasConvertedToCommonShare = !hasConvertedToCommonShare;
+                    currentShareHolder.payout.isCapReached = !hasConvertedToCommonShare;
+                    dispatch({
+                      type: "shareholders",
+                      payload: currentShareHolder
+                    });
+                    // setCallPrefferedStock(!callPrefferedStock);
                   }}
                 >
                   {hasConvertedToCommonShare ? "Switch back!" : "Convert now!"}

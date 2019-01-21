@@ -10,6 +10,8 @@ import { shortNumber } from "./index";
 export default shareholders => {
   let totalShares = 0;
   let participationPercentage = 0;
+  console.log("wtf is the sreholders? ", shareholders);
+
   return Object.keys(shareholders)
     .map(key => {
       // omit the shares of capped investors
