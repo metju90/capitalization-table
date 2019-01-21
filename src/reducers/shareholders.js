@@ -42,7 +42,7 @@ export function reducer(state, action) {
        */
       shareholders.reduce((balance, currentShareholder) => {
         const {
-          payout: {  liquidationPreference, isCapReached },
+          payout: { liquidationPreference, isCapReached },
           sharesInPercentage,
           invested,
           cap,
@@ -50,7 +50,7 @@ export function reducer(state, action) {
           multiplier,
           title
         } = currentShareholder;
-        console.log("ok in here!!!");
+        console.log("checking for capped ?!?!?!?!?!");
         if (hasConvertedToCommonShare) {
           return balance;
         }
@@ -106,7 +106,7 @@ export function reducer(state, action) {
           return balance;
         }
         console.log(
-          "uncapped stage",
+          "uncapped stage ?!?!?!?!?!",
           currentShareholder.title,
           cappedInvestors,
           investorsWhichExceedsCap,
