@@ -5,15 +5,18 @@ import { ResetData, Input, ContentCenter, Container } from "./skin";
 import Tile from "./components/Tile";
 import Footer from "./components/Footer";
 import Summary from "./components/Summery";
-import { shareholdersReducer } from "./reducers";
+import { shareholdersReducer as reducer } from "./reducers";
 import {
-  defaultShareHoldersData,
-  initialState,
-  defaultExitValue
+  DEFAULT_SHAREHOLDERS_DATA,
+  INITIAL_STATE,
+  DEFAULT_EXIT_VALUE,
+  SHAREHOLDERS,
+  EXIT_VALUE,
+  PREFERRED_STOCK
 } from "./constants";
 
 const App = () => {
-  const [state, dispatch] = useReducer(shareholdersReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   const [callPreferredStock, setCallPreferredStock] = useState(false);
   const { exitValue, cappedInvestors, commonStockSum, shareholders } = state;
   console.log(">>> RETURN FROM DISPATCH ", { ...state });
@@ -21,7 +24,7 @@ const App = () => {
   useEffect(
     () => {
       dispatch({
-        type: "preferredStock",
+        type: PREFERRED_STOCK,
         payload: { shareholders, exitValue }
       });
     },
@@ -31,7 +34,7 @@ const App = () => {
   useEffect(
     () => {
       dispatch({
-        type: "shareholders",
+        type: SHAREHOLDERS,
         payload: { shareholders, cappedInvestors, commonStockSum }
       });
     },
@@ -52,7 +55,7 @@ const App = () => {
             step={1.0e6}
             type="number"
             onChange={e =>
-              dispatch({ type: "exitValue", payload: e.target.value })
+              dispatch({ type: EXIT_VALUE, payload: e.target.value })
             }
             placeholder="Exit value"
           />
@@ -60,7 +63,7 @@ const App = () => {
             onClick={() => {
               dispatch({
                 type: "shareholders",
-                payload: defaultShareHoldersData
+                payload: DEFAULT_SHAREHOLDERS_DATA
               });
               dispatch({
                 type: "cappedInvestors",
@@ -68,7 +71,7 @@ const App = () => {
               });
               dispatch({
                 type: "exitValue",
-                payload: defaultExitValue
+                payload: DEFAULT_EXIT_VALUE
               });
             }}
           >

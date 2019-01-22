@@ -1,13 +1,20 @@
 import { getShareholdersDefaultData } from "./utils";
 import { cloneDeep } from "lodash";
 
-export const defaultShareHoldersData = cloneDeep(getShareholdersDefaultData());
-export const defaultExitValue =
+export const DEFAULT_SHAREHOLDERS_DATA = cloneDeep(
+  getShareholdersDefaultData()
+);
+
+export const DEFAULT_EXIT_VALUE =
   new URL(window.location.href).searchParams.get("exit") || 25.0e6;
 
-export const initialState = {
-  exitValue: defaultExitValue,
+export const INITIAL_STATE = {
+  exitValue: DEFAULT_EXIT_VALUE,
   cappedInvestors: [],
   commonStockSum: 0,
-  shareholders: defaultShareHoldersData
+  shareholders: DEFAULT_SHAREHOLDERS_DATA
 };
+
+export const EXIT_VALUE = "EXIT_VALUE";
+export const PREFERRED_STOCK = "PREFERRED_STOCK";
+export const SHAREHOLDERS = "SHAREHOLDERS";

@@ -1,6 +1,6 @@
-import { shortNumber } from "./formatNumbers";
+import shortNumber from "./shortNumbers";
 import calculateSharesinPercentage from "./sharesInPercentage";
-import { getShareholdersDefaultData } from "./shareholders";
+import getShareholdersDefaultData from "./shareholders";
 import preferredAndCommonStock from "./preferredAndCommonStock";
 import processCappedShareholders from "./processCappedShareholders";
 import processUnCappedShareholders from "./processUnCappedShareholders";

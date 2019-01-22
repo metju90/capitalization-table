@@ -7,7 +7,7 @@
  * @returns {String} Short number
  */
 
-const shortNumber = number => {
+export default number => {
   number = parseFloat(Number(number)).toFixed(2);
   number =
     Math.abs(Number(number)) >= 1.0e9
@@ -22,5 +22,3 @@ const shortNumber = number => {
       : Math.abs(Number(number));
   return `${number}`;
 };
-
-export { shortNumber };

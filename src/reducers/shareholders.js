@@ -4,18 +4,20 @@ import {
   processUnCappedShareholders
 } from "../utils";
 
+import { EXIT_VALUE, PREFERRED_STOCK, SHAREHOLDERS } from "../constants";
+
 export function reducer(state, action) {
   switch (action.type) {
     case "reset": {
       return action.payload;
     }
-    case "exitValue": {
+    case EXIT_VALUE: {
       return {
         ...state,
-        exitValue: action.payload
+        exitValue: action.payload > 0 ? action.payload : 0
       };
     }
-    case "preferredStock": {
+    case PREFERRED_STOCK: {
       const [shareholders, commonStockSum] = preferredAndCommonStock({
         ...action.payload
       });
@@ -27,7 +29,7 @@ export function reducer(state, action) {
         cappedInvestors: []
       };
     }
-    case "shareholders": {
+    case SHAREHOLDERS: {
       const { payload } = action;
       let investorsWhichExceedsCap = [];
 
@@ -40,7 +42,7 @@ export function reducer(state, action) {
         ...payload,
         investorsWhichExceedsCap
       });
-      
+
       const { shareholders } = processUnCappedShareholders({
         ...payload,
         cappedInvestors,

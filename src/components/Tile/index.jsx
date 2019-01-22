@@ -11,11 +11,10 @@ import {
   Title,
   UserInputNumber,
   UserInteractionWrapper,
-  ConvertButton,
   OverLayer
 } from "./skin";
 import { SmallText } from "../Summery/skin";
-import ToolTip from "../Summery/tooltip";
+import ToolTip from "../Summery/Tooltip";
 import Convert from "./Convert";
 
 const Tile = ({
@@ -85,10 +84,10 @@ const Tile = ({
               <RemoveButton
                 isDisabled={cap < 3}
                 onClick={() => {
-                  currentShareHolder.cap = cap - 1;
+                  // currentShareHolder.cap = cap - 1;
                   dispatch({
-                    type: "shareholders",
-                    payload: currentShareHolder
+                    type: "",
+                    payload: ""
                   });
                 }}
               >
@@ -97,10 +96,10 @@ const Tile = ({
               <UserInputNumber>x{cap}</UserInputNumber>
               <AddButton
                 onClick={() => {
-                  currentShareHolder.cap = cap + 1;
+                  // currentShareHolder.cap = cap + 1;
                   dispatch({
-                    type: "shareholders",
-                    payload: currentShareHolder
+                    type: "",
+                    payload: ""
                   });
                 }}
               >
@@ -114,10 +113,10 @@ const Tile = ({
               <RemoveButton
                 isDisabled={multiplier < 2}
                 onClick={() => {
-                  currentShareHolder.multiplier = multiplier - 1;
+                  // currentShareHolder.multiplier = multiplier - 1;
                   dispatch({
-                    type: "shareholders",
-                    payload: currentShareHolder
+                    type: "",
+                    payload: ""
                   });
                 }}
               >
@@ -126,10 +125,10 @@ const Tile = ({
               <UserInputNumber>x{multiplier}</UserInputNumber>
               <AddButton
                 onClick={() => {
-                  currentShareHolder.multiplier = multiplier + 1;
+                  // currentShareHolder.multiplier = multiplier + 1;
                   dispatch({
-                    type: "shareholders",
-                    payload: currentShareHolder
+                    type: "",
+                    payload: ""
                   });
                 }}
               >

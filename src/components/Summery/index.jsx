@@ -1,7 +1,7 @@
 import React from "react";
 import { shortNumber } from "../../utils";
 import { Summary, ContentWrapper, SmallText, Header } from "./skin";
-import ToolTip from "../Summery/tooltip";
+import ToolTip from "../Summery/Tooltip";
 
 export default ({ exitValue, commonStockSum, cappedParticipation }) => (
   <Summary>
