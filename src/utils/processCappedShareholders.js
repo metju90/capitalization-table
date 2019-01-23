@@ -9,13 +9,11 @@ export default ({
 }) => {
   shareholders.reduce((balance, currentShareholder) => {
     const {
-      payout: { liquidationPreference, isCapReached },
+      payout: { liquidationPreference },
       sharesInPercentage,
       invested,
       cap,
-      hasConvertedToCommonShare,
-      multiplier,
-      title
+      hasConvertedToCommonShare
     } = currentShareholder;
     console.log("checking for capped ?!?!?!?!?!");
     if (hasConvertedToCommonShare) {
@@ -24,10 +22,17 @@ export default ({
     const doesExceedCap =
       balance * (sharesInPercentage / 100) > invested * (cap - 1);
     if (doesExceedCap) {
+      /**
+       *
+       * To check whether or not its worth for the investor to
+       * keep the preferred stock or to convert
+       *
+       */
+
       currentShareholder.payout = {
         liquidationPreference,
         // cap - 1 because liquidation preference is considered as x1.
-        // Therefore adding I am reducing the preferrenced stock from
+        // Therefore adding I am reducing the preferred stock from
         // the cap.
         participation: invested * (cap - 1),
         isCapReached: true

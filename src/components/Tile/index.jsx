@@ -15,25 +15,19 @@ import {
 } from "./skin";
 import { SmallText } from "../Summery/skin";
 import ToolTip from "../Summery/Tooltip";
-import Convert from "./Convert";
+import InteractiveArea from "./InteractiveArea";
 
 const Tile = ({
-  currentShareHolder,
-  dispatch,
-  setCallPrefferedStock,
-  callPrefferedStock
+  title,
+  sharesInPercentage,
+  shares,
+  payout: { liquidationPreference, participation, isCapReached },
+  invested,
+  cap,
+  multiplier,
+  hasConvertedToCommonShare,
+  uncappedParticipationPercentage
 }) => {
-  const {
-    title,
-    sharesInPercentage,
-    shares,
-    payout: { liquidationPreference, participation, isCapReached },
-    invested,
-    cap,
-    multiplier,
-    hasConvertedToCommonShare,
-    uncappedParticipationPercentage
-  } = currentShareHolder;
   const isFounder = title === "Founders";
   return (
     <ShareHolder>
@@ -76,73 +70,13 @@ const Tile = ({
         </Data>
       </DataRow>
       {!isFounder && (
-        <VariablesWrapper>
-          {hasConvertedToCommonShare && <OverLayer />}
-          <Variable>
-            <span>Cap:</span>
-            <UserInteractionWrapper>
-              <RemoveButton
-                isDisabled={cap < 3}
-                onClick={() => {
-                  // currentShareHolder.cap = cap - 1;
-                  dispatch({
-                    type: "",
-                    payload: ""
-                  });
-                }}
-              >
-                -
-              </RemoveButton>
-              <UserInputNumber>x{cap}</UserInputNumber>
-              <AddButton
-                onClick={() => {
-                  // currentShareHolder.cap = cap + 1;
-                  dispatch({
-                    type: "",
-                    payload: ""
-                  });
-                }}
-              >
-                +
-              </AddButton>
-            </UserInteractionWrapper>
-          </Variable>
-          <Variable>
-            <span>Multiplier:</span>
-            <UserInteractionWrapper>
-              <RemoveButton
-                isDisabled={multiplier < 2}
-                onClick={() => {
-                  // currentShareHolder.multiplier = multiplier - 1;
-                  dispatch({
-                    type: "",
-                    payload: ""
-                  });
-                }}
-              >
-                -
-              </RemoveButton>
-              <UserInputNumber>x{multiplier}</UserInputNumber>
-              <AddButton
-                onClick={() => {
-                  // currentShareHolder.multiplier = multiplier + 1;
-                  dispatch({
-                    type: "",
-                    payload: ""
-                  });
-                }}
-              >
-                +
-              </AddButton>
-            </UserInteractionWrapper>
-          </Variable>
-          {(isCapReached || hasConvertedToCommonShare) && (
-            <Convert
-              hasConvertedToCommonShare={hasConvertedToCommonShare}
-              isCapReached={isCapReached}
-            />
-          )}
-        </VariablesWrapper>
+        <InteractiveArea
+          cap={cap}
+          title={title}
+          multiplier={multiplier}
+          hasConvertedToCommonShare={hasConvertedToCommonShare}
+          isCapReached={isCapReached}
+        />
       )}
     </ShareHolder>
   );

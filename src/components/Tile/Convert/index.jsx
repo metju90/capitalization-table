@@ -1,8 +1,13 @@
-import React, { memo } from "react";
+import React from "react";
 import { ConvertButton } from "../skin";
 import { SmallText } from "../../Summery/skin";
 
-export default memo(({ hasConvertedToCommonShare, isCapReached }) => {
+export default ({
+  investorTitle,
+  hasConvertedToCommonShare,
+  isCapReached,
+  dispatch
+}) => {
   return (
     <div>
       <SmallText isCappMessaged>
@@ -11,9 +16,14 @@ export default memo(({ hasConvertedToCommonShare, isCapReached }) => {
           You can either retain your preferred stock or convert them to common.
         </div>
       </SmallText>
-      <ConvertButton hasConverted={hasConvertedToCommonShare}>
+      <ConvertButton
+        hasConverted={hasConvertedToCommonShare}
+        onClick={() => {
+          dispatch({ type: "CONVERT_INVESTOR", payload: investorTitle });
+        }}
+      >
         {hasConvertedToCommonShare ? "Switch back!" : "Convert now!"}
       </ConvertButton>
     </div>
   );
-});
+};

@@ -12,11 +12,8 @@ export default ({
 }) => {
   shareholders.reduce((balance, currentShareholder) => {
     const {
-      payout: { participation, liquidationPreference },
+      payout: { liquidationPreference },
       sharesInPercentage,
-      invested,
-      cap,
-      hasConvertedToCommonShare,
       uncappedParticipationPercentage
     } = currentShareholder;
     console.log("ncapped stage ?! ", investorsWhichExceedsCap);

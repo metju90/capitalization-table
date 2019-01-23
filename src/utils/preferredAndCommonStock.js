@@ -25,13 +25,13 @@ export default ({ shareholders, exitValue }) => {
       } = currentShareholder;
 
       // This does not apply for founders.
-      // If There is no exit value, there is nothing to work out.
+      // And if there is no exit value, there is nothing to work out.
       if (currentShareholder.title === "Founders" || exitValue < 0) {
         return balance;
       }
 
       // If investors converted to Common stock, exclude
-      // them from the preffered stock separa
+      // them from the preferred stock separa
       if (hasConvertedToCommonShare) {
         currentShareholder.payout = {
           participation,

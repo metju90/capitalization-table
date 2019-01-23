@@ -17,4 +17,7 @@ export const INITIAL_STATE = {
 
 export const EXIT_VALUE = "EXIT_VALUE";
 export const PREFERRED_STOCK = "PREFERRED_STOCK";
-export const SHAREHOLDERS = "SHAREHOLDERS";
+export const CHANGE_CAP = "CHANGE_CAP";
+export const CHANGE_MULTIPLIER = "CHANGE_MULTIPLIER";
+export const ADDITION = "ADDITION";
+export const SUBTRACT = "SUBTRACT";

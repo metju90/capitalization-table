@@ -1,60 +1,61 @@
-import {
-  preferredAndCommonStock,
-  processCappedShareholders,
-  processUnCappedShareholders
-} from "../utils";
-
-import { EXIT_VALUE, PREFERRED_STOCK, SHAREHOLDERS } from "../constants";
+import { PREFERRED_STOCK, CHANGE_CAP, CHANGE_MULTIPLIER } from "../constants";
 
 export function reducer(state, action) {
   switch (action.type) {
     case "reset": {
       return action.payload;
     }
-    case EXIT_VALUE: {
+    case "CONVERT_INVESTOR": {
+      const investorToConvert = state.shareholders.find(
+        s => s.title === action.payload
+      );
+      console.log("investorToConvert", investorToConvert);
       return {
-        ...state,
-        exitValue: action.payload > 0 ? action.payload : 0
+        ...state
       };
     }
-    case PREFERRED_STOCK: {
-      const [shareholders, commonStockSum] = preferredAndCommonStock({
-        ...action.payload
-      });
 
+    case CHANGE_MULTIPLIER: {
+      const { title, operation } = action.payload;
+      const { shareholders: UnprocessedShareholders, runProcess } = state;
+      const shareholders = UnprocessedShareholders.map(s => {
+        if (s.title === title) {
+          if (operation === "ADDITION") s.multiplier++;
+          else s.multiplier--;
+        }
+        return s;
+      });
       return {
         ...state,
-        commonStockSum,
         shareholders,
-        cappedInvestors: []
+        runProcess: !runProcess
       };
     }
-    case SHAREHOLDERS: {
-      const { payload } = action;
-      let investorsWhichExceedsCap = [];
 
-      // the following two function might
-      // be possible to merge them into one.
-      const [
-        processedShareholders,
-        cappedInvestors
-      ] = processCappedShareholders({
-        ...payload,
-        investorsWhichExceedsCap
+    case CHANGE_CAP: {
+      const { title, operation } = action.payload;
+      const { shareholders: UnprocessedShareholders, runProcess } = state;
+      const shareholders = UnprocessedShareholders.map(s => {
+        if (s.title === title) {
+          if (operation === "ADDITION") s.cap++;
+          else s.cap--;
+        }
+        return s;
       });
-
-      const { shareholders } = processUnCappedShareholders({
-        ...payload,
-        cappedInvestors,
-        shareholders: processedShareholders,
-        investorsWhichExceedsCap
-      });
-
       return {
         ...state,
-        shareholders
+        shareholders,
+        runProcess: !runProcess
       };
     }
+
+    case PREFERRED_STOCK: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+
     default: {
       return state;
     }

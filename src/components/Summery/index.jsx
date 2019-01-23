@@ -3,7 +3,7 @@ import { shortNumber } from "../../utils";
 import { Summary, ContentWrapper, SmallText, Header } from "./skin";
 import ToolTip from "../Summery/Tooltip";
 
-export default ({ exitValue, commonStockSum, cappedParticipation }) => (
+export default ({ exitValue, commonStockSum, uncappedStock }) => (
   <Summary>
     <ContentWrapper>
       <ToolTip message={"Exit price"} />
@@ -42,7 +42,7 @@ export default ({ exitValue, commonStockSum, cappedParticipation }) => (
         <h4>Uncapped stock:</h4>
         <SmallText>Stocks in cash:</SmallText>
       </Header>
-      <strong>${shortNumber(commonStockSum - cappedParticipation)}</strong>
+      <strong>${shortNumber(uncappedStock)}</strong>
     </ContentWrapper>
   </Summary>
 );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, Fragment } from "react";
+import React, { useEffect, useReducer, Fragment, createContext } from "react";
 import { Row } from "styled-bootstrap-grid";
 import uuid from "uuid";
 import { ResetData, Input, ContentCenter, Container } from "./skin";
@@ -10,44 +10,40 @@ import {
   DEFAULT_SHAREHOLDERS_DATA,
   INITIAL_STATE,
   DEFAULT_EXIT_VALUE,
-  SHAREHOLDERS,
   EXIT_VALUE,
   PREFERRED_STOCK
 } from "./constants";
+import Dispatch from "./context";
+import { mainCalculator } from "./actions";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const [callPreferredStock, setCallPreferredStock] = useState(false);
-  const { exitValue, cappedInvestors, commonStockSum, shareholders } = state;
-  console.log(">>> RETURN FROM DISPATCH ", { ...state });
+  const {
+    exitValue,
+    cappedInvestors,
+    commonStockSum,
+    shareholders,
+    runProcess
+  } = state;
+  console.log(">>> CURRENT STATE IS <<<", Dispatch, { ...state });
 
+  // to be executed once, when component mounts.
   useEffect(
     () => {
-      dispatch({
-        type: PREFERRED_STOCK,
-        payload: { shareholders, exitValue }
-      });
+      mainCalculator(dispatch, { shareholders, exitValue });
     },
-    [exitValue]
-  );
-
-  useEffect(
-    () => {
-      dispatch({
-        type: SHAREHOLDERS,
-        payload: { shareholders, cappedInvestors, commonStockSum }
-      });
-    },
-    [commonStockSum]
+    [runProcess]
   );
 
   console.log("capped pariticpation ", cappedInvestors);
-  const cappedParticipation = cappedInvestors.reduce((accumlator, i) => {
-    return accumlator + i.payout.participation;
-  }, 0);
+
+  const uncappedStock =
+    cappedInvestors.reduce((accumulatedCap, i) => {
+      return accumulatedCap + i.payout.participation;
+    }, 0) - commonStockSum;
 
   return (
-    <Fragment>
+    <Dispatch.Provider value={dispatch}>
       <Container>
         <ContentCenter alignItem="center">
           <Input
@@ -55,23 +51,21 @@ const App = () => {
             step={1.0e6}
             type="number"
             onChange={e =>
-              dispatch({ type: EXIT_VALUE, payload: e.target.value })
+              mainCalculator(dispatch, {
+                shareholders,
+                exitValue: e.target.value
+              })
             }
             placeholder="Exit value"
           />
           <ResetData
             onClick={() => {
               dispatch({
-                type: "shareholders",
-                payload: DEFAULT_SHAREHOLDERS_DATA
-              });
-              dispatch({
-                type: "cappedInvestors",
-                payload: []
-              });
-              dispatch({
-                type: "exitValue",
-                payload: DEFAULT_EXIT_VALUE
+                type: PREFERRED_STOCK,
+                payload: {
+                  shareholders: DEFAULT_SHAREHOLDERS_DATA,
+                  exitValue: DEFAULT_EXIT_VALUE
+                }
               });
             }}
           >
@@ -82,29 +76,20 @@ const App = () => {
           <Summary
             exitValue={exitValue}
             commonStockSum={commonStockSum}
-            cappedParticipation={cappedParticipation}
+            uncappedStock={uncappedStock}
           />
         </ContentCenter>
         <Row>
           <ContentCenter>
-            {shareholders.map(s => {
-              // If there are any capped investor, to disable
-              // all but the capped ones.
-              console.log("hey there!!!! ", s);
-              const props = {
-                currentShareHolder: s,
-                cappedInvestors,
-                dispatch,
-                callPreferredStock,
-                setCallPreferredStock
-              };
-              return <Tile key={uuid()} {...props} />;
-            })}
+            {shareholders.map(s => (
+              <Tile key={uuid()} {...s} />
+            ))}
+            }
           </ContentCenter>
         </Row>
       </Container>
       <Footer />
-    </Fragment>
+    </Dispatch.Provider>
   );
 };
 

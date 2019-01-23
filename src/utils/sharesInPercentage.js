@@ -5,8 +5,8 @@
  *
  * @param {Object} shareholders - Static data of the share holders
  *
- * @returns {Object} - The same object which is passed as param with the a
- * new key(s) `sharesInPercentage` and if applicable, `uncappedParticipationPercentage`
+ * @returns {Object} - The same object which is passed as param with one or two
+ * new key(s). `sharesInPercentage` and if applicable, `uncappedParticipationPercentage`
  *
  */
 export default shareholders => {
@@ -40,8 +40,6 @@ export default shareholders => {
     });
 };
 
-// this function assumes that the partial value is smaller than 1.
-// i.e. 0.5, 0.33 or 0.067
-const calculatePercentage = (partialValue, totalValue) =>
+const calculatePercentage = (percentage, value) =>
   // This is a workout to deal with Javascript's issues with float numbers
-  Math.round(((100 * partialValue) / totalValue).toFixed(2) * 100) / 100;
+  Math.round(((100 * percentage) / value).toFixed(2) * 100) / 100;
