@@ -1,8 +1,8 @@
-import React, { useState, Fragment } from "react";
-import { ToolTip, HoverableArea } from "./skin";
+import React from "react";
+import { ToolTip, HoverableArea } from "../skin";
 import { FaInfoCircle } from "react-icons/fa";
 
-export default ({ message, isHidden }) => {
+export default ({ message }) => {
   return (
     <HoverableArea>
       <FaInfoCircle />

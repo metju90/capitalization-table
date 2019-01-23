@@ -1,21 +1,9 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { shortNumber } from "../../utils";
-import {
-  ShareHolder,
-  AddButton,
-  RemoveButton,
-  Variable,
-  VariablesWrapper,
-  DataRow,
-  Data,
-  Title,
-  UserInputNumber,
-  UserInteractionWrapper,
-  ConvertButton,
-  OverLayer
-} from "./skin";
+import { ShareHolder, DataRow, Data, Title } from "./skin";
 import { SmallText } from "../Summery/skin";
-import ToolTip from "../Summery/tooltip";
+import ToolTip from "../Summery/Tooltip";
+import InteractiveArea from "./InteractiveArea";
 
 const Tile = ({
   title,
@@ -25,15 +13,8 @@ const Tile = ({
   invested,
   cap,
   multiplier,
-  shareholders,
-  setShareholders,
-  currentStakeholder,
-  toggle,
-  setToggle,
   hasConvertedToCommonShare,
-  participationPercentage,
-  setCappedInvestors,
-  cappedInvestors
+  uncappedParticipationPercentage
 }) => {
   const isFounder = title === "Founders";
   return (
@@ -70,92 +51,25 @@ const Tile = ({
         <ToolTip message="Money the investor will take from the common or uncapped stocks. (% is referred to the uncapped)" />
         <span>Participation:</span>
         <Data textAlign="right">
-          {!isCapReached && <SmallText>({participationPercentage}%)</SmallText>}
+          <SmallText>
+            ({isCapReached ? "Capped" : `${uncappedParticipationPercentage}%`})
+          </SmallText>
           ${shortNumber(participation)}
         </Data>
       </DataRow>
-      {!isFounder && (
-        <VariablesWrapper>
-          {hasConvertedToCommonShare && <OverLayer />}
-          <Variable>
-            <span>Cap:</span>
-            <UserInteractionWrapper>
-              <RemoveButton
-                isDisabled={cap < 3}
-                onClick={() => {
-                  shareholders[currentStakeholder].cap = cap - 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-              >
-                -
-              </RemoveButton>
-              <UserInputNumber>x{cap}</UserInputNumber>
-              <AddButton
-                onClick={() => {
-                  shareholders[currentStakeholder].cap = cap + 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-              >
-                +
-              </AddButton>
-            </UserInteractionWrapper>
-          </Variable>
-          <Variable>
-            <span>Multiplier:</span>
-            <UserInteractionWrapper>
-              <RemoveButton
-                isDisabled={multiplier < 2}
-                onClick={() => {
-                  shareholders[currentStakeholder].multiplier = multiplier - 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-              >
-                -
-              </RemoveButton>
-              <UserInputNumber>x{multiplier}</UserInputNumber>
-              <AddButton
-                onClick={() => {
-                  shareholders[currentStakeholder].multiplier = multiplier + 1;
-                  setShareholders(shareholders);
-                  setToggle(!toggle);
-                }}
-              >
-                +
-              </AddButton>
-            </UserInteractionWrapper>
-          </Variable>
-          <div>
-            {(isCapReached || hasConvertedToCommonShare) && (
-              <Fragment>
-                <SmallText isCappMessaged>
-                  <strong>Capped limited Reached.</strong>
-                  <div>
-                    You can either retain your preferred stock or convert them
-                    to common.
-                  </div>
-                </SmallText>
-                <ConvertButton
-                  hasConverted={hasConvertedToCommonShare}
-                  onClick={() => {
-                    shareholders[
-                      currentStakeholder
-                    ].hasConvertedToCommonShare = !hasConvertedToCommonShare;
-                    shareholders[
-                      currentStakeholder
-                    ].payout.isCapReached = !hasConvertedToCommonShare;
-                    setShareholders(shareholders);
-                    setToggle(!toggle);
-                  }}
-                >
-                  {hasConvertedToCommonShare ? "Switch back!" : "Convert now!"}
-                </ConvertButton>
-              </Fragment>
-            )}
-          </div>
-        </VariablesWrapper>
+      {!isFounder && !hasConvertedToCommonShare && (
+        <InteractiveArea
+          cap={cap}
+          title={title}
+          multiplier={multiplier}
+          hasConvertedToCommonShare={hasConvertedToCommonShare}
+          isCapReached={isCapReached}
+        />
+      )}
+      {hasConvertedToCommonShare && (
+        <div>
+          <SmallText>Converted preferred to common stocks.</SmallText>
+        </div>
       )}
     </ShareHolder>
   );

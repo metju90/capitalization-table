@@ -32,6 +32,7 @@ export const ShareHolder = styled.div`
   margin: 0 20px;
   padding: 20px;
   width: 260px;
+  min-height: 340px;
   position: relative;
   ${({ theme }) => theme.elements.boxShadow()}
   background: ${({ theme }) => theme.colorSet.whitest};  

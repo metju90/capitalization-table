@@ -1,37 +1,68 @@
+import {
+  PREFERRED_STOCK,
+  CHANGE_CAP,
+  CHANGE_MULTIPLIER,
+  ADDITION
+} from "../constants";
+
 export function reducer(state, action) {
   switch (action.type) {
-    case "reset":
+    case "reset": {
       return action.payload;
-    case "updateAll":
-      action.payload.sort(function(a, b) {
-        if (a.title < b.title) {
-          return -1;
+    }
+    case "CONVERT_INVESTOR": {
+      const investorToConvert = state.shareholders.find(
+        s => s.title === action.payload
+      );
+      console.log("investorToConvert", investorToConvert);
+      return {
+        ...state
+      };
+    }
+
+    case CHANGE_MULTIPLIER: {
+      const { title, operation } = action.payload;
+      const { shareholders: UnprocessedShareholders, reCalculate } = state;
+      const shareholders = UnprocessedShareholders.map(s => {
+        if (s.title === title) {
+          if (operation === ADDITION) s.multiplier++;
+          else s.multiplier--;
         }
-        if (a.title > b.title) {
-          return 1;
-        }
-        return 0;
-      });
-      return action.payload  
-    case "update":
-      const shareholders = state.map(s => {
-        if (s.title === action.payload.title) return action.payload;
         return s;
       });
-      shareholders.sort(function(a, b) {
-        if (a.title < b.title) {
-          return -1;
+      return {
+        ...state,
+        shareholders,
+        reCalculate: !reCalculate
+      };
+    }
+
+    case CHANGE_CAP: {
+      const { title, operation } = action.payload;
+      const { shareholders: UnprocessedShareholders, reCalculate } = state;
+      const shareholders = UnprocessedShareholders.map(s => {
+        if (s.title === title) {
+          if (operation === ADDITION) s.cap++;
+          else s.cap--;
         }
-        if (a.title > b.title) {
-          return 1;
-        }
-        return 0;
+        return s;
       });
-      // console.log("in rdecuer!! ", action.payload, shareholders);
-      return shareholders;
-    default:
-      // A reducer must always return a valid state.
-      // Alternatively you can throw an error if an invalid action is dispatched.
+      return {
+        ...state,
+        shareholders,
+        reCalculate: !reCalculate
+      };
+    }
+
+    case PREFERRED_STOCK: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
+
+    default: {
       return state;
+    }
   }
 }

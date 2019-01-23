@@ -1,45 +1,45 @@
-import { shortNumber } from "./index";
 /**
  *
- * Function which calculates the shares of investors/founders in percentage
+ * Function which calculates shareholders percentages - their shares and if
+ * applicable, the percentage they will take from the uncapped stock.
  *
  * @param {Object} shareholders - Static data of the share holders
  *
- * @returns {Object} - The same object which is passed as param with the a new key `sharesInPercentage`
+ * @returns {Object} - The same object which is passed as param with one or two
+ * new key(s). `sharesInPercentage` and if applicable, `uncappedParticipationPercentage`
+ *
  */
 export default shareholders => {
-  let totalShares = 0;
-  let participationPercentage = 0;
+  let investorsCombinedShares = 0;
+  let totalSharesOfUncappedInvestors = 0;
+
   return Object.keys(shareholders)
     .map(key => {
-      // omit the shares of capped investors
-      console.log(
-        "is this one capped?!?!?!",
-        shareholders[key].payout.isCapReached
-      );
+      investorsCombinedShares += shareholders[key].shares;
 
-      totalShares += shareholders[key].shares;
-      if (shareholders[key].payout.isCapReached) return shareholders[key];
-      participationPercentage += shareholders[key].shares;
+      if (shareholders[key].payout.isCapReached) {
+        return shareholders[key];
+      }
+      // Only if the investor is not capped.
+      totalSharesOfUncappedInvestors += shareholders[key].shares;
       return shareholders[key];
     })
     .map(s => {
-      s.sharesInPercentage =
-        Math.round(((100 * s.shares) / totalShares).toFixed(2) * 100) / 100;
+      s.sharesInPercentage = calculatePercentage(
+        s.shares,
+        investorsCombinedShares
+      );
+
       if (!s.payout.isCapReached) {
-        s.participationPercentage =
-          Math.round(
-            ((100 * s.shares) / participationPercentage).toFixed(2) * 100
-          ) / 100;
-        console.log(
-          "UPDATING SHARES IN PER ",
-          shortNumber(totalShares),
-          s.title,
-          s.sharesInPercentage,
-          totalShares
+        s.uncappedParticipationPercentage = calculatePercentage(
+          s.shares,
+          totalSharesOfUncappedInvestors
         );
       }
-      //   console.log("wtf??? ", s.sharesInPercentage);
       return s;
     });
 };
+
+const calculatePercentage = (percentage, value) =>
+  // This is a workout to deal with Javascript's issues with float numbers
+  Math.round(((100 * percentage) / value).toFixed(2) * 100) / 100;

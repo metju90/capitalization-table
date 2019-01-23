@@ -39,6 +39,6 @@ const sharesHoldersData = {
   }
 };
 
-export const getShareholdersDefaultData = () => {
+export default () => {
   return calculateSharesinPercentage(sharesHoldersData);
 };
