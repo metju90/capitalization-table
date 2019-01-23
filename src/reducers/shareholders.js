@@ -14,7 +14,7 @@ export function reducer(state, action) {
       const investorToConvert = state.shareholders.find(
         s => s.title === action.payload
       );
-      console.log("investorToConvert", investorToConvert);
+      
       return {
         ...state
       };

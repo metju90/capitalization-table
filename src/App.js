@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, Fragment, createContext } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Row } from "styled-bootstrap-grid";
 import uuid from "uuid";
 import { ResetData, Input, ContentCenter, Container } from "./skin";
@@ -24,7 +24,6 @@ const App = () => {
     shareholders,
     reCalculate
   } = state;
-  console.log(">>> CURRENT STATE IS <<<", Dispatch, { ...state });
 
   // to be executed once, when component mounts.
   useEffect(
@@ -33,8 +32,6 @@ const App = () => {
     },
     [reCalculate]
   );
-
-  console.log("capped pariticpation ", cappedInvestors);
 
   const uncappedStock =
     cappedInvestors.reduce((accumulatedCap, i) => {

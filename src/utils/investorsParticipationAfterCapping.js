@@ -5,6 +5,5 @@ export default (cappedInvestors, balance) => {
       i => (cappedInvesorsCommonShares += i.payout.participation)
     );
   }
-  // console.log("WWWWWW", cappedInvestors, cappedInvesorsCommonShares);
   return balance - cappedInvesorsCommonShares;
 };
