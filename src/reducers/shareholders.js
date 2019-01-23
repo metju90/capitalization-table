@@ -1,4 +1,9 @@
-import { PREFERRED_STOCK, CHANGE_CAP, CHANGE_MULTIPLIER } from "../constants";
+import {
+  PREFERRED_STOCK,
+  CHANGE_CAP,
+  CHANGE_MULTIPLIER,
+  ADDITION
+} from "../constants";
 
 export function reducer(state, action) {
   switch (action.type) {
@@ -17,10 +22,10 @@ export function reducer(state, action) {
 
     case CHANGE_MULTIPLIER: {
       const { title, operation } = action.payload;
-      const { shareholders: UnprocessedShareholders, runProcess } = state;
+      const { shareholders: UnprocessedShareholders, reCalculate } = state;
       const shareholders = UnprocessedShareholders.map(s => {
         if (s.title === title) {
-          if (operation === "ADDITION") s.multiplier++;
+          if (operation === ADDITION) s.multiplier++;
           else s.multiplier--;
         }
         return s;
@@ -28,16 +33,16 @@ export function reducer(state, action) {
       return {
         ...state,
         shareholders,
-        runProcess: !runProcess
+        reCalculate: !reCalculate
       };
     }
 
     case CHANGE_CAP: {
       const { title, operation } = action.payload;
-      const { shareholders: UnprocessedShareholders, runProcess } = state;
+      const { shareholders: UnprocessedShareholders, reCalculate } = state;
       const shareholders = UnprocessedShareholders.map(s => {
         if (s.title === title) {
-          if (operation === "ADDITION") s.cap++;
+          if (operation === ADDITION) s.cap++;
           else s.cap--;
         }
         return s;
@@ -45,7 +50,7 @@ export function reducer(state, action) {
       return {
         ...state,
         shareholders,
-        runProcess: !runProcess
+        reCalculate: !reCalculate
       };
     }
 

@@ -10,7 +10,6 @@ import {
   DEFAULT_SHAREHOLDERS_DATA,
   INITIAL_STATE,
   DEFAULT_EXIT_VALUE,
-  EXIT_VALUE,
   PREFERRED_STOCK
 } from "./constants";
 import Dispatch from "./context";
@@ -23,7 +22,7 @@ const App = () => {
     cappedInvestors,
     commonStockSum,
     shareholders,
-    runProcess
+    reCalculate
   } = state;
   console.log(">>> CURRENT STATE IS <<<", Dispatch, { ...state });
 
@@ -32,7 +31,7 @@ const App = () => {
     () => {
       mainCalculator(dispatch, { shareholders, exitValue });
     },
-    [runProcess]
+    [reCalculate]
   );
 
   console.log("capped pariticpation ", cappedInvestors);
