@@ -14,22 +14,22 @@ export default (dispatch, payload) => {
 
   // the following two function might
   // be possible to merge them into one.
-  const [
-    secondProcessedShareholders,
-    cappedInvestors
-  ] = processCappedShareholders({
-    shareholders: firstProcessedShareholders,
+  // const [
+  //   secondProcessedShareholders,
+  //   cappedInvestors
+  // ] = processCappedShareholders({
+  //   shareholders: firstProcessedShareholders,
+  //   commonStockSum,
+  //   cappedInvestors: [],
+  //   investorsWhichExceedsCap
+  // });
+
+  // console.log("hey there! capped investor", cappedInvestors);
+
+  const { shareholders, cappedInvestors } = processUnCappedShareholders({
     commonStockSum,
     cappedInvestors: [],
-    investorsWhichExceedsCap
-  });
-
-  console.log("hey there! capped investor", cappedInvestors);
-
-  const { shareholders } = processUnCappedShareholders({
-    commonStockSum,
-    cappedInvestors,
-    shareholders: secondProcessedShareholders,
+    shareholders: firstProcessedShareholders,
     investorsWhichExceedsCap
   });
 

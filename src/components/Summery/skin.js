@@ -4,8 +4,6 @@ export const SmallText = styled.div`
   color: ${({ theme }) => theme.colorSet.secondary};
   font-size: 11px;
   font-weight: 200;
-  min-height: ${({ isCappMessaged }) => (isCappMessaged ? "52px" : "inherit")};
-  ${({ isCappMessaged }) => isCappMessaged && "margin: 10px 0"};
 `;
 
 export const Summary = styled.div`

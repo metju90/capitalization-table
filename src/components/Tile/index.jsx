@@ -1,18 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { shortNumber } from "../../utils";
-import {
-  ShareHolder,
-  AddButton,
-  RemoveButton,
-  Variable,
-  VariablesWrapper,
-  DataRow,
-  Data,
-  Title,
-  UserInputNumber,
-  UserInteractionWrapper,
-  OverLayer
-} from "./skin";
+import { ShareHolder, DataRow, Data, Title } from "./skin";
 import { SmallText } from "../Summery/skin";
 import ToolTip from "../Summery/Tooltip";
 import InteractiveArea from "./InteractiveArea";
@@ -69,7 +57,7 @@ const Tile = ({
           ${shortNumber(participation)}
         </Data>
       </DataRow>
-      {!isFounder && (
+      {!isFounder && !hasConvertedToCommonShare && (
         <InteractiveArea
           cap={cap}
           title={title}
@@ -77,6 +65,11 @@ const Tile = ({
           hasConvertedToCommonShare={hasConvertedToCommonShare}
           isCapReached={isCapReached}
         />
+      )}
+      {hasConvertedToCommonShare && (
+        <div>
+          <SmallText>Converted preferred to common stocks.</SmallText>
+        </div>
       )}
     </ShareHolder>
   );

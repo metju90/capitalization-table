@@ -9,48 +9,45 @@ export default ({
 }) => {
   shareholders.reduce((balance, currentShareholder) => {
     const {
-      payout: { liquidationPreference },
+      payout: { liquidationPreference, participation },
       sharesInPercentage,
       invested,
       cap,
       hasConvertedToCommonShare
     } = currentShareholder;
-    console.log("checking for capped ?!?!?!?!?!");
-    if (hasConvertedToCommonShare) {
-      return balance;
-    }
-    const doesExceedCap =
-      balance * (sharesInPercentage / 100) > invested * (cap - 1);
-    if (doesExceedCap) {
-      /**
-       *
-       * To check whether or not its worth for the investor to
-       * keep the preferred stock or to convert
-       *
-       */
+    console.log(
+      "checking for capped ?!?!?!?!?!",
+      currentShareholder.title,
+      invested * cap - 1,
+      participation
+    );
+    // if (hasConvertedToCommonShare) {
+    //   return balance;
+    // }
 
-      currentShareholder.payout = {
-        liquidationPreference,
-        // cap - 1 because liquidation preference is considered as x1.
-        // Therefore adding I am reducing the preferred stock from
-        // the cap.
-        participation: invested * (cap - 1),
-        isCapReached: true
-      };
-      console.log("does he exceed the cap????");
-      // Add investors in the capp list
-      // If they aren't already.
-      const isInvestorAlreadyCapped = cappedInvestors.find(
-        i => i.title === currentShareholder.title
-      );
-      if (!isInvestorAlreadyCapped) {
-        cappedInvestors.push(currentShareholder);
-      }
-    }
+    // const participationWithoutConversion =
+    /**
+     *
+     * To check whether or not its worth for the investor to
+     * keep the preferred stock or to convert
+     *
+     */
 
-    if (doesExceedCap || hasConvertedToCommonShare) {
-      investorsWhichExceedsCap.push(currentShareholder.title);
-    }
+    // currentShareholder.payout = {
+    //   liquidationPreference,
+    //   // cap - 1 because liquidation preference is considered as x1.
+    //   // Therefore adding I am reducing the preferred stock from
+    //   // the cap.
+    //   participation: invested * (cap - 1),
+    //   isCapReached: true
+    // };
+    console.log("does he exceed the cap????", currentShareholder.title);
+
+    //}
+
+    // if (doesExceedCap || hasConvertedToCommonShare) {
+    //   investorsWhichExceedsCap.push(currentShareholder.title);
+    // }
     console.log(
       "hey there???commonStockSum",
       investorsWhichExceedsCap,

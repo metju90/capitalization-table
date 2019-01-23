@@ -4,6 +4,7 @@ import getShareholdersDefaultData from "./shareholders";
 import preferredAndCommonStock from "./preferredAndCommonStock";
 import processCappedShareholders from "./processCappedShareholders";
 import processUnCappedShareholders from "./processUnCappedShareholders";
+import getInvestorsParticipationAfterCapping from "./investorsParticipationAfterCapping";
 
 export {
   shortNumber,
@@ -11,5 +12,6 @@ export {
   getShareholdersDefaultData,
   preferredAndCommonStock,
   processCappedShareholders,
-  processUnCappedShareholders
+  processUnCappedShareholders,
+  getInvestorsParticipationAfterCapping
 };

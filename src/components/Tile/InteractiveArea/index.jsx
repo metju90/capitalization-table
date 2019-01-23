@@ -14,20 +14,12 @@ import {
   handleMultiplierAddition,
   handleMultiplierSubtract
 } from "../../../actions";
-import Convert from "../Convert";
 import Dispatch from "../../../context";
 
-export default ({
-  cap,
-  title,
-  multiplier,
-  hasConvertedToCommonShare,
-  isCapReached
-}) => {
+export default ({ cap, title, multiplier, isCapReached }) => {
   const dispatch = useContext(Dispatch);
   return (
     <VariablesWrapper>
-      {hasConvertedToCommonShare && <OverLayer />}
       <Variable>
         <span>Cap:</span>
         <UserInteractionWrapper>
@@ -55,13 +47,6 @@ export default ({
           </AddButton>
         </UserInteractionWrapper>
       </Variable>
-      {(isCapReached || hasConvertedToCommonShare) && (
-        <Convert
-          hasConvertedToCommonShare={hasConvertedToCommonShare}
-          isCapReached={isCapReached}
-          investorTitle={title}
-        />
-      )}
     </VariablesWrapper>
   );
 };

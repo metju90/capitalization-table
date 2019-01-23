@@ -1,3 +1,7 @@
+## Problem definition
+
+This software provides a solution [for this problem](https://gist.github.com/morloy/40bc8469cef175c7607a437ac37d4110)
+
 ## Demo
 
 [Demo link here](http://ledgy.matthewbarbara.com)
@@ -56,7 +60,6 @@ If you would like to see neat solutions, check out the following:
 
 - **Tools tips**\
   Added tool tips to help you understand my reasoning.
-  
 
 ## Domain knowledge
 

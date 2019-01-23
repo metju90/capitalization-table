@@ -83,7 +83,6 @@ const App = () => {
             {shareholders.map(s => (
               <Tile key={uuid()} {...s} />
             ))}
-            }
           </ContentCenter>
         </Row>
       </Container>
