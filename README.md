@@ -1,6 +1,6 @@
 ## Problem definition
 
-This software provides a solution [for this](https://gist.github.com/morloy/40bc8469cef175c7607a437ac37d4110) complicated  problem using cutting edge technologies such as 
+This software provides a solution [for this problem](https://gist.github.com/morloy/40bc8469cef175c7607a437ac37d4110)   problem using cutting edge technologies such as 
 
 ***CSS in JS***
 
