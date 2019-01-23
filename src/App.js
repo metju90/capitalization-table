@@ -55,15 +55,12 @@ const App = () => {
             placeholder="Exit value"
           />
           <ResetData
-            onClick={() => {
-              dispatch({
-                type: PREFERRED_STOCK,
-                payload: {
-                  shareholders: DEFAULT_SHAREHOLDERS_DATA,
-                  exitValue: DEFAULT_EXIT_VALUE
-                }
-              });
-            }}
+            onClick={() =>
+              mainCalculator(dispatch, {
+                shareholders: DEFAULT_SHAREHOLDERS_DATA,
+                exitValue: DEFAULT_EXIT_VALUE
+              })
+            }
           >
             Reset
           </ResetData>
