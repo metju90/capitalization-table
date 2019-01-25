@@ -25,7 +25,7 @@ const App = () => {
     reCalculate
   } = state;
 
-  // to be executed once, when component mounts.
+  // to be executed when component mounts and when `reCalculate` changes
   useEffect(
     () => {
       mainCalculator(dispatch, { shareholders, exitValue });
